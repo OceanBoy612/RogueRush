@@ -75,7 +75,10 @@ func spawn_level(v):
 	for _i in range(room_number):
 		rooms.shuffle()
 		for room in rooms:
-			# check if the room fits
+			# check if the room fits - unimplemented
+			if randi() % 2:
+				room.flip_x()
+			
 			offset = get_new_offset(room) # this is in the wrong place...
 			fill_room(room)
 			entrance = room_info["exits"][0]
