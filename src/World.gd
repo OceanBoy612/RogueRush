@@ -62,6 +62,7 @@ func spawn_level(v):
 	var rooms: Array = load_rooms() # an array of Image objects
 	# create the spawn room
 	var spawn_room: Image = load(rooms_dir + start_room_name).get_data()
+	
 	fill_room(spawn_room)
 	entrance = room_info["player_spawns"][0]
 	exit = room_info["exits"][0]
@@ -76,21 +77,34 @@ func spawn_level(v):
 		rooms.shuffle()
 		for room in rooms:
 			# check if the room fits - unimplemented
+			
+			# randomly flip the room
 			if randi() % 2:
 				room.flip_x()
 			
-			offset = get_new_offset(room) # this is in the wrong place...
-			fill_room(room)
-			entrance = room_info["exits"][0]
-			exit = room_info["exits"][1]
-			print(entrance, exit, offset)
+			spawn_room(room)
+			
+#			print(entrance, exit, offset)
 			
 			break
-			
+	
+	
+	# spawn the exit room
+	spawn_room.flip_x()
+	spawn_room(spawn_room)
+	
 	
 
 
 ### Subroutines ###
+
+
+func spawn_room(room):
+	offset = get_new_offset(room)
+	fill_room(room)
+	entrance = room_info["exits"][0]
+	if room_info["exits"].size() > 1:
+		exit = room_info["exits"][1]
 
 
 func reset_room_info():
@@ -105,11 +119,11 @@ func get_new_offset(room) -> Vector2:
 	# new offset is the one farthest from the current offset.
 	var exit_positions = get_exit_positions(room)
 	for pos in exit_positions:
-		printt(offset, exit, pos)
+#		printt(offset, exit, pos)
 		if entrance.distance_to(pos) < 2 or true: # first one found
 #			var new_offset = (offset + exit) - pos
 			var new_offset = (offset + exit) - pos
-			print("new offset: %s" % [new_offset])
+#			print("new offset: %s" % [new_offset])
 			return new_offset
 	push_error("No new offset found")
 	return exit
