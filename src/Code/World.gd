@@ -32,15 +32,29 @@ var room_info = {
 
 
 func _ready():
+	$Player.connect("attack", self, "on_player_attack")
+	$Player.connect("landed", self, "on_player_landed")
+	$Player.connect("jumped", self, "on_player_jumped")
+	$Zombie.connect("died", self, "on_zombie_died")
+	
 	if Engine.editor_hint:
 		return
 	
 	spawn_level(true)
 
+func on_zombie_died():
+	$Camera2D.add_trauma(0.3)
+
+func on_player_attack():
+	$Camera2D.add_trauma(0.35)
 
 
+func on_player_landed():
+	$Camera2D.add_trauma(0)
 
-
+func on_player_jumped():
+	$Camera2D.add_trauma(0)
+	
 
 
 

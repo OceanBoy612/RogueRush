@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Player_sprite_frames.tres" type="SpriteFrames" id=2]
 [ext_resource path="res://Audio/Mythril Age SFX Pack v1/Sound_70.wav" type="AudioStream" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -20,5 +21,12 @@ animation = "Jump"
 
 [node name="LandSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
-volume_db = -4.763
+volume_db = -20.984
 pitch_scale = 1.36
+
+[node name="AttackPosition" type="Position2D" parent="."]
+position = Vector2( 40, 0 )
+
+[node name="Sprite" type="Sprite" parent="AttackPosition"]
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 4 )

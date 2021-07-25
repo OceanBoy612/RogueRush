@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal died
+
 
 
 var move_dir = Vector2(1,0)
@@ -25,3 +27,8 @@ func _physics_process(delta):
 		if over_ledge or against_wall:
 			move_dir *= -1
 			timer = 0
+
+
+func damage():
+	emit_signal("died")
+	queue_free()

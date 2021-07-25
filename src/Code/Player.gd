@@ -4,6 +4,7 @@ extends KinematicBody2D
 signal collided
 signal landed
 signal jumped
+signal attack
 
 
 export var speed: float = 150
@@ -16,7 +17,7 @@ export var friction: float = 0.7
 var decaying_forces = []
 var vel: Vector2 = Vector2()
 var prev_vel: Vector2 = Vector2()
-
+var playerattack_tscn = preload("res://Prefabs/PlayerAttack.tscn")
 
 var on_floor: bool = false
 
@@ -42,8 +43,11 @@ func _physics_process(delta):
 		emit_signal("jumped")
 		
 	
-	
-	
+	if vel.x > 0:
+		$AttackPosition.position.x = abs($AttackPosition.position.x)
+	elif vel.x < 0:
+		$AttackPosition.position.x = abs($AttackPosition.position.x)*-1
+
 	for i in get_slide_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		if (temp-vel).length() > 5: # real collisions:
@@ -79,6 +83,11 @@ func _input(event):
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 5, 0.5)
 		)
+		var attackShape = playerattack_tscn.instance()
+		get_parent().add_child(attackShape)
+		attackShape.global_position = $AttackPosition.global_position
+		emit_signal("attack")
+		Global.time_scale = 0
 
 
 func _ready():
