@@ -53,6 +53,5 @@ process_mode = 0
 smoothing_enabled = true
 smoothing_speed = 20.0
 script = ExtResource( 5 )
-player_path = NodePath("../Player")
 
 [node name="Tween" type="Tween" parent="Camera2D"]

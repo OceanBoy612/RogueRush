@@ -81,6 +81,10 @@ func _input(event):
 		)
 
 
+func _ready():
+	connect("landed", self, "_on_landed")
+
+
 ### Main ###
 
 ### Subroutines ###
@@ -117,7 +121,15 @@ func get_forces() -> Vector2:
 
 ### Subroutines ###
 
+### Signal functions ###
 
+func _on_landed():
+	# spawn dust cloud
+	var dust = load("res://Prefabs/Dust.tscn").instance()
+	dust.global_position = global_position + Vector2(0, 10)
+	get_parent().add_child(dust)
+
+### Signal functions ###
 
 
 

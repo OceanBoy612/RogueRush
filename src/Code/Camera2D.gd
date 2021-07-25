@@ -3,7 +3,8 @@ extends Camera2D
 
 
 
-export var player_path: NodePath
+
+export var player_path: NodePath = NodePath("../Player")
 export var bob_amount = 25
 export(float, 0, 0.2, 0.01) var bob_duration = 0.08
 
