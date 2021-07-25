@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Push Item on Floor 002.wav-cebb9d9877996b3eac018b635706fcb0.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Other/Push Item on Floor 002.wav"
+dest_files=[ "res://.import/Push Item on Floor 002.wav-cebb9d9877996b3eac018b635706fcb0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

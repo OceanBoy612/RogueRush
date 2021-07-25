@@ -128,6 +128,7 @@ func _on_landed():
 	var dust = load("res://Prefabs/Dust.tscn").instance()
 	dust.global_position = global_position + Vector2(0, 10)
 	get_parent().add_child(dust)
+	$LandSound.play()
 
 ### Signal functions ###
 

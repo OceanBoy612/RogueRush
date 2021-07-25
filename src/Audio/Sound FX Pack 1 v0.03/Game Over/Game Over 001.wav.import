@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Game Over 001.wav-d17ccdc8cf5be3591c7c23e2627f41d7.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Game Over/Game Over 001.wav"
+dest_files=[ "res://.import/Game Over 001.wav-d17ccdc8cf5be3591c7c23e2627f41d7.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

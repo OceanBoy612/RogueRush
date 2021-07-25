@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Blip 006.wav-b2a6993b041008d58f1295fdc80c1177.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Blips/Blip 006.wav"
+dest_files=[ "res://.import/Blip 006.wav-b2a6993b041008d58f1295fdc80c1177.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

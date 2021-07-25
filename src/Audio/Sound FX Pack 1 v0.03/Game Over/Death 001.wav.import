@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Death 001.wav-d455dbb7c8fd49ff700730f22384c2c7.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Game Over/Death 001.wav"
+dest_files=[ "res://.import/Death 001.wav-d455dbb7c8fd49ff700730f22384c2c7.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

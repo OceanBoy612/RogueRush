@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Sound_89.wav-aefeabfe7c53d95534b8a9d3082a7f86.sample"
+
+[deps]
+
+source_file="res://Audio/Mythril Age SFX Pack v1/Sound_89.wav"
+dest_files=[ "res://.import/Sound_89.wav-aefeabfe7c53d95534b8a9d3082a7f86.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

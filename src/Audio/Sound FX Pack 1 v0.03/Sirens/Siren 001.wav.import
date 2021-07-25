@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Siren 001.wav-b8f15283f7a9a4056e9f9d57b1df00b9.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Sirens/Siren 001.wav"
+dest_files=[ "res://.import/Siren 001.wav-b8f15283f7a9a4056e9f9d57b1df00b9.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

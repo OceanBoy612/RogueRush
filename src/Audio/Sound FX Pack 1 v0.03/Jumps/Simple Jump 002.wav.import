@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Simple Jump 002.wav-415916ca5fe3a95167b9720dab7b8661.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Jumps/Simple Jump 002.wav"
+dest_files=[ "res://.import/Simple Jump 002.wav-415916ca5fe3a95167b9720dab7b8661.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

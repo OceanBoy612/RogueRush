@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Weapon Making 004.wav-bdf1a7951a878cd44be11f31cf79e2e8.sample"
+
+[deps]
+
+source_file="res://Audio/Sound FX Pack 1 v0.03/Metallic/Weapon Making 004.wav"
+dest_files=[ "res://.import/Weapon Making 004.wav-bdf1a7951a878cd44be11f31cf79e2e8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
