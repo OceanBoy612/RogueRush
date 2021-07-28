@@ -21,6 +21,12 @@ var playerattack_tscn = preload("res://Prefabs/PlayerAttack.tscn")
 
 var on_floor: bool = false
 
+enum {
+	MOVE,
+	ATTACK,
+	JUMP
+}
+var state = MOVE
 
 ### Main ###
 
@@ -34,9 +40,11 @@ func _physics_process(delta):
 	var temp = vel
 	vel = move_and_slide(vel * Global.time_scale, Vector2(0, -1))
 	
-	
 	if not on_floor and is_on_floor():
 		on_floor = true
+		state = MOVE
+		print("TESTER")
+		$sprite.play("Jump land")
 		emit_signal("landed")
 	if on_floor and not is_on_floor():
 		on_floor = false
@@ -44,9 +52,17 @@ func _physics_process(delta):
 		
 	
 	if vel.x > 0:
+		$sprite.flip_h = false
 		$AttackPosition.position.x = abs($AttackPosition.position.x)
 	elif vel.x < 0:
+		$sprite.flip_h = true
 		$AttackPosition.position.x = abs($AttackPosition.position.x)*-1
+	
+	
+	if vel.y < 0:
+		$sprite.play("Jump up")
+	elif vel.y > 0:
+		$sprite.play("Jump down")
 
 	for i in get_slide_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
@@ -76,10 +92,12 @@ func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		# jump
 		if is_on_floor():
+			state = JUMP
 			decaying_forces.append(
 				DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 			)
 	if event.is_action_pressed("attack"):
+		state = ATTACK
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 5, 0.5)
 		)
@@ -88,15 +106,28 @@ func _input(event):
 		attackShape.global_position = $AttackPosition.global_position
 		emit_signal("attack")
 		Global.time_scale = 0
+		$sprite.play("Attack")
 
 
 func _ready():
 	connect("landed", self, "_on_landed")
+	$sprite.connect("animation_finished", self, "animation_finished")
 
 
 ### Main ###
 
 ### Subroutines ###
+
+func animation_finished():
+	print($sprite.animation)
+	if(state == ATTACK):
+		state = MOVE
+
+		$sprite.play("Run")
+	if(state == JUMP):
+		state = MOVE
+		$sprite.play("Run")
+
 
 func get_user_input() -> Vector2:
 	return Vector2(
@@ -140,16 +171,6 @@ func _on_landed():
 	$LandSound.play()
 
 ### Signal functions ###
-
-
-
-
-
-
-
-
-
-
 
 
 class DecayingForce:
