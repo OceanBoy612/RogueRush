@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Player_sprite_frames.tres" type="SpriteFrames" id=2]
@@ -9,7 +9,49 @@
 radius = 9.07934
 height = 8.2813
 
+[sub_resource type="Animation" id=2]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "Attack" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 14 ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.9 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_attack"
+} ]
+}
+
 [node name="Player" type="KinematicBody2D"]
+scale = Vector2( 2, 2 )
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 1 )
@@ -21,8 +63,6 @@ shape = SubResource( 1 )
 [node name="sprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 2 )
 animation = "Run"
-frame = 9
-playing = true
 
 [node name="LandSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )
@@ -35,3 +75,11 @@ position = Vector2( 26, 6 )
 [node name="Sprite" type="Sprite" parent="AttackPosition"]
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Attack = SubResource( 2 )
+
+[node name="floorDetector" type="RayCast2D" parent="."]
+position = Vector2( 4.26614, 5.45669 )
+enabled = true
+cast_to = Vector2( 0, 16.396 )
