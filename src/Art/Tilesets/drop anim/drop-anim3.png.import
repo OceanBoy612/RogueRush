@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/DetailTilesheet.png-3d9413eba7816f2db7a39e0c95de9be9.stex"
+path="res://.import/drop-anim3.png-3151abda43bad940450249059b1f4802.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/DetailTilesheet.png"
-dest_files=[ "res://.import/DetailTilesheet.png-3d9413eba7816f2db7a39e0c95de9be9.stex" ]
+source_file="res://Art/Tilesets/drop anim/drop-anim3.png"
+dest_files=[ "res://.import/drop-anim3.png-3151abda43bad940450249059b1f4802.stex" ]
 
 [params]
 

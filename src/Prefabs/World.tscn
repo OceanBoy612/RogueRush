@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Prefabs/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Code/World.gd" type="Script" id=2]
@@ -6,7 +6,8 @@
 [ext_resource path="res://Art/Tilesets/Tilesheet.png" type="Texture" id=4]
 [ext_resource path="res://Code/Camera2D.gd" type="Script" id=5]
 [ext_resource path="res://Prefabs/Zombie.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Art/DetailTilesheet.png" type="Texture" id=7]
+[ext_resource path="res://Art/Tilesets/DetailTilesheet.png" type="Texture" id=7]
+[ext_resource path="res://Art/Tilesets/drop.tres" type="Texture" id=8]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -308,6 +309,20 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 24/shape_one_way_margin = 0.0
 24/shapes = [  ]
 24/z_index = 0
+25/name = "drop"
+25/texture = ExtResource( 8 )
+25/tex_offset = Vector2( 0, 0 )
+25/modulate = Color( 1, 1, 1, 1 )
+25/region = Rect2( 0, -16, 16, 112 )
+25/tile_mode = 0
+25/occluder_offset = Vector2( 0, 0 )
+25/navigation_offset = Vector2( 0, 0 )
+25/shape_offset = Vector2( 0, 0 )
+25/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+25/shape_one_way = false
+25/shape_one_way_margin = 0.0
+25/shapes = [  ]
+25/z_index = 0
 
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
