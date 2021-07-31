@@ -15,6 +15,8 @@ func _physics_process(delta):
 	move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
 	timer += delta
 	
+	$sprite.flip_h = move_dir.x > 0
+	
 	if timer > 0.4:
 		var l = int($left.is_colliding())
 		var r = int($right.is_colliding())

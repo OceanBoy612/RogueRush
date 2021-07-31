@@ -6,33 +6,40 @@
 [sub_resource type="CircleShape2D" id=1]
 
 [node name="Zombie" type="KinematicBody2D"]
+scale = Vector2( 2, 2 )
 collision_layer = 4
 collision_mask = 2147483653
 script = ExtResource( 2 )
 
 [node name="collider" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -10 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -16.185 )
 frames = ExtResource( 1 )
-animation = "Attack"
+animation = "Shamble"
+frame = 2
+playing = true
 
 [node name="left" type="RayCast2D" parent="."]
-position = Vector2( -13.0147, 0 )
+position = Vector2( -13.0147, -8.50961 )
 enabled = true
 collision_mask = 5
 
 [node name="right" type="RayCast2D" parent="."]
-position = Vector2( 13.3484, 0 )
+position = Vector2( 13.3484, -8.50961 )
 enabled = true
 collision_mask = 5
 
 [node name="right_side" type="RayCast2D" parent="."]
+position = Vector2( 0, -8.50961 )
 enabled = true
 cast_to = Vector2( 30, 0 )
 collision_mask = 5
 
 [node name="left_side" type="RayCast2D" parent="."]
+position = Vector2( 0, -8.50961 )
 enabled = true
 cast_to = Vector2( -30, 0 )
 collision_mask = 5
