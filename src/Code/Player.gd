@@ -70,13 +70,10 @@ func _input(event):
 		)
 		$sprite.playing = false
 		$AnimationPlayer.play("Attack")
-	if event.is_action_pressed("dash"):
-		state = DASH
-		decaying_forces.append(
-			DecayingForce.new(dash_force, vel.normalized(), 15, 1.0, "dashed")
-		)
-		$sprite.play("Dash on")
 		animation_lock = true
+	
+	if event.is_action_pressed("dash") and can_dash():
+		dash()
 
 
 func _ready():
@@ -146,6 +143,7 @@ func handle_animations():
 
 func spawn_attack():
 	var attackShape = playerattack_tscn.instance()
+	attackShape.creator = self
 	get_parent().add_child(attackShape)
 	attackShape.global_position = $AttackPosition.global_position
 	emit_signal("attacked")
@@ -189,6 +187,32 @@ func is_on_floor():
 	return $floorDetector.is_colliding()
 
 
+func can_dash():
+	return $UI/DashCooldown.value == $UI/DashCooldown.max_value
+
+
+func dash():
+	state = DASH
+	decaying_forces.append(
+		DecayingForce.new(dash_force, vel.normalized(), 15, 1.0, "dashed")
+	)
+	$sprite.play("Dash on")
+	animation_lock = true
+	empty_dash_meter()
+
+
+func fill_dash_meter():
+	$UI/DashCooldown.value = $UI/DashCooldown.max_value
+
+
+func empty_dash_meter():
+	$UI/DashCooldown.value = $UI/DashCooldown.min_value
+
+
+func killed(body):
+	fill_dash_meter()
+
+
 ### Subroutines ###
 
 ### Signal functions ###
@@ -204,6 +228,7 @@ func _on_landed():
 func _on_animation_finished(anim_name: String):
 	if anim_name == "Attack":
 		state = MOVE
+		animation_lock = false
 
 
 var animation_lock = false

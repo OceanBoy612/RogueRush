@@ -12,6 +12,10 @@ var gravity = Vector2(0,100)
 var timer = 0
 
 
+func _ready():
+	$sprite.play("Shamble")
+
+
 func _physics_process(delta):
 	
 	move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
@@ -47,7 +51,6 @@ func _on_death():
 		return
 	
 	randomize()
-	print(scale)
 	var chunk_size = 8
 	for i in range(curr_text.get_width() / chunk_size):
 		for j in range(curr_text.get_height() / chunk_size):

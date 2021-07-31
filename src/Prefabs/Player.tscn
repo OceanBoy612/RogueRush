@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Player_sprite_frames.tres" type="SpriteFrames" id=2]
 [ext_resource path="res://Audio/Mythril Age SFX Pack v1/Sound_70.wav" type="AudioStream" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Code/ui/UI.gd" type="Script" id=5]
+[ext_resource path="res://Code/DashCooldown.gd" type="Script" id=6]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.0
@@ -51,19 +53,20 @@ tracks/2/keys = {
 }
 
 [node name="Player" type="KinematicBody2D"]
-scale = Vector2( 2, 2 )
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 1 )
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -13 )
+position = Vector2( 0, -26.2469 )
+scale = Vector2( 2, 2 )
 shape = SubResource( 1 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
-position = Vector2( -6.64725, -16.1717 )
+position = Vector2( -6.647, -32 )
+scale = Vector2( 2, 2 )
 frames = ExtResource( 2 )
-animation = "Jump land"
+animation = "Attack"
 frame = 1
 playing = true
 
@@ -73,7 +76,8 @@ volume_db = -20.984
 pitch_scale = 1.36
 
 [node name="AttackPosition" type="Position2D" parent="."]
-position = Vector2( 26.5953, -0.151184 )
+position = Vector2( 55.1891, 0 )
+scale = Vector2( 2, 2 )
 
 [node name="Sprite" type="Sprite" parent="AttackPosition"]
 visible = false
@@ -87,6 +91,35 @@ anims/Attack = SubResource( 2 )
 position = Vector2( 0, -2 )
 enabled = true
 cast_to = Vector2( 0, 16.396 )
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DashCooldown" type="TextureProgress" parent="UI"]
+margin_left = 26.9391
+margin_top = 23.5717
+margin_right = 90.9391
+margin_bottom = 87.5717
+max_value = 2.0
+step = 0.001
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 4 )
+fill_mode = 5
+tint_under = Color( 0.341176, 0.341176, 0.341176, 0.596078 )
+tint_progress = Color( 0.92549, 0.92549, 0.92549, 1 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="dashed" from="." to="." method="_on_Player_dashed"]
 [connection signal="animation_finished" from="sprite" to="." method="_on_sprite_animation_finished"]
