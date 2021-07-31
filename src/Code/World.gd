@@ -79,6 +79,7 @@ func spawn_level(v):
 	
 	fill_room(spawn_room)
 	entrance = room_info["player_spawns"][0]
+	$Player.global_position = $Background.map_to_world(offset + room_info["player_spawns"][0])
 	exit = room_info["exits"][0]
 	
 	# for the number of rooms, 
@@ -106,6 +107,8 @@ func spawn_level(v):
 	# spawn the exit room
 	spawn_room.flip_x()
 	spawn_room(spawn_room)
+	
+	$Exit.global_position = $Background.map_to_world(offset + room_info["player_spawns"][0])
 	
 	
 
@@ -218,3 +221,8 @@ static func list_files_in_directory(path, ext=".tres"):
 	
 	return files
 
+
+
+func _on_Exit_body_entered(body):
+	if body.name == "Player":
+		spawn_level(true)

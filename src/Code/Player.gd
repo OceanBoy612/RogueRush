@@ -109,7 +109,7 @@ func handle_animations():
 		return 
 	
 	# on floor not on floor
-	if not on_floor and is_on_floor(): #landed
+	if not on_floor and is_on_floor() and .is_on_floor(): #landed
 		on_floor = true
 		state = MOVE
 		
@@ -232,6 +232,7 @@ func _on_landed():
 	dust.global_position = global_position + Vector2(0, 10)
 	get_parent().add_child(dust)
 	$LandSound.play()
+	vel.y = 0
 
 
 func _on_animation_finished(anim_name: String):
