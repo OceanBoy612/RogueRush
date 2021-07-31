@@ -11,7 +11,7 @@ signal dashed
 export var speed: float = 55
 export var jump_height: float = 220
 export var attack_force: float = 35
-export var dash_force: float = 95
+export var dash_force: float = 260
 export var gravity_scale: float = 11
 export var friction: float = 0.7
 export var time_between_stomps: int = 2700
@@ -159,10 +159,10 @@ func spawn_attack():
 	Global.time_scale = 0
 
 
-func get_user_input() -> Vector2:
+func get_user_input(up_aswell: bool = false) -> Vector2:
 	return Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		0
+		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up") if up_aswell else 0
 	) * speed
 
 
@@ -203,8 +203,9 @@ func can_dash():
 func dash():
 	state = DASH
 	decaying_forces.append(
-		DecayingForce.new(dash_force, vel.normalized(), 15, 1.0, "dashed")
+		DecayingForce.new(dash_force, get_user_input(true).normalized(), 10, 0.8, "dashed")
 	)
+	vel = Vector2()
 	$sprite.play("Dash on")
 	animation_lock = true
 	empty_dash_meter()
