@@ -15,7 +15,7 @@ const color_air: Color = Color("#ffffff")
 const color_spawn: Color = Color("#ff00ff")
 const color_exit: Color = Color("#ffff00")
 
-const wall_id: int = 0 # tilemap id for the tiles
+const wall_id: int = 1 # tilemap id for the tiles
 const air_id: int = -1 # tilemap id for the tiles
 
 
@@ -119,6 +119,8 @@ func spawn_room(room):
 	entrance = room_info["exits"][0]
 	if room_info["exits"].size() > 1:
 		exit = room_info["exits"][1]
+	$Background.update_bitmask_region()
+	$Foreground.update_bitmask_region()
 
 
 func reset_room_info():

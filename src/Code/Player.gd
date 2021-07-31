@@ -8,11 +8,11 @@ signal attacked
 signal dashed
 
 
-export var speed: float = 150
-export var jump_height: float = 580
-export var attack_force: float = 100
-export var dash_force: float = 250
-export var gravity_scale: float = 30
+export var speed: float = 55
+export var jump_height: float = 220
+export var attack_force: float = 35
+export var dash_force: float = 95
+export var gravity_scale: float = 11
 export var friction: float = 0.7
 export var time_between_stomps: int = 2700
 
