@@ -14,6 +14,7 @@ export var attack_force: float = 100
 export var dash_force: float = 250
 export var gravity_scale: float = 30
 export var friction: float = 0.7
+export var time_between_stomps: int = 2700
 
 
 var decaying_forces = []
@@ -138,8 +139,16 @@ func handle_animations():
 		if abs(vel.x) > 1:
 			$sprite.play("Run")
 		else:
-			$sprite.playing = false
+			if OS.get_system_time_msecs() - time_since_stomp < time_between_stomps:
+				$sprite.play("Idle")
+			else:
+				$sprite.play("Idle Stomp")
+				animation_lock = true
+				print("STOMP")
+				time_since_stomp = OS.get_system_time_msecs()
+#			$sprite.playing = false
 
+var time_since_stomp = OS.get_system_time_msecs()
 
 func spawn_attack():
 	var attackShape = playerattack_tscn.instance()
