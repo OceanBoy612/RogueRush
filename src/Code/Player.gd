@@ -81,7 +81,10 @@ func _ready():
 
 
 func handle_animations():
+	if animation_lock:
+		return
 	
+	# on floor not on floor
 	if not on_floor and is_on_floor():
 		on_floor = true
 		state = MOVE
@@ -91,8 +94,8 @@ func handle_animations():
 	if on_floor and not is_on_floor():
 		on_floor = false
 		emit_signal("jumped")
-		
 	
+	# left and right flipping
 	if vel.x > 0:
 		$sprite.flip_h = false
 		$sprite.position.x = abs($sprite.position.x) * -1
@@ -102,14 +105,23 @@ func handle_animations():
 		$sprite.position.x = abs($sprite.position.x)
 		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
 	
+	
 	if not on_floor:
-		if abs(vel.y) < 120:
-			print("in air")
+		if $sprite.animation == "Run":
+			$sprite.play("Jump")
+			animation_lock = true # for anim to finish
+		elif abs(vel.y) < 120: # near the top of the jump arc.
 			$sprite.play("Jump air")
 		elif vel.y < 0:
 			$sprite.play("Jump up")
 		elif vel.y > 0:
 			$sprite.play("Jump down")
+	else:
+		# on the floor
+		if abs(vel.x) > 1:
+			$sprite.play("Run")
+		else:
+			$sprite.playing = false
 
 
 func spawn_attack():
@@ -171,6 +183,11 @@ func _on_animation_finished(anim_name: String):
 		state = MOVE
 
 
+var animation_lock = false
+func _on_sprite_animation_finished():
+	if animation_lock:
+		animation_lock = false
+
 ### Signal functions ###
 
 
@@ -195,3 +212,5 @@ class DecayingForce:
 		power *= decay_rate
 		frames += 1
 		return impulse
+
+
