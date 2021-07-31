@@ -19,7 +19,7 @@ shape = SubResource( 1 )
 position = Vector2( 0, -16.185 )
 frames = ExtResource( 1 )
 animation = "Shamble"
-frame = 2
+frame = 3
 playing = true
 
 [node name="left" type="RayCast2D" parent="."]

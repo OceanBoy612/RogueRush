@@ -85,7 +85,7 @@ func handle_animations():
 	if not on_floor and is_on_floor():
 		on_floor = true
 		state = MOVE
-		print("TESTER")
+#		print("TESTER")
 		$sprite.play("Jump land")
 		emit_signal("landed")
 	if on_floor and not is_on_floor():
@@ -95,16 +95,21 @@ func handle_animations():
 	
 	if vel.x > 0:
 		$sprite.flip_h = false
+		$sprite.position.x = abs($sprite.position.x) * -1
 		$AttackPosition.position.x = abs($AttackPosition.position.x)
 	elif vel.x < 0:
 		$sprite.flip_h = true
-		$AttackPosition.position.x = abs($AttackPosition.position.x)*-1
+		$sprite.position.x = abs($sprite.position.x)
+		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
 	
-	
-	if vel.y < 0:
-		$sprite.play("Jump up")
-	elif vel.y > 0:
-		$sprite.play("Jump down")
+	if not on_floor:
+		if abs(vel.y) < 120:
+			print("in air")
+			$sprite.play("Jump air")
+		elif vel.y < 0:
+			$sprite.play("Jump up")
+		elif vel.y > 0:
+			$sprite.play("Jump down")
 
 
 func spawn_attack():
