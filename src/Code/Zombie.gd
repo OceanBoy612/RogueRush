@@ -3,6 +3,8 @@ extends KinematicBody2D
 signal died
 
 
+onready var fragment_tscn = preload("res://Code/fragment/Fragment.tscn")
+
 
 var move_dir = Vector2(1,0)
 var move_speed = 100
@@ -33,4 +35,32 @@ func _physics_process(delta):
 
 func damage():
 	emit_signal("died")
+	_on_death()
 	queue_free()
+
+
+func _on_death():
+	#spawn fragments
+	var curr_text: Texture = $sprite.frames.get_frame($sprite.animation, $sprite.frame)
+	if curr_text.get_width() != curr_text.get_height():
+		push_error("sprite is not square for fragmentation")
+		return
+	
+	randomize()
+	print(scale)
+	var chunk_size = 8
+	for i in range(curr_text.get_width() / chunk_size):
+		for j in range(curr_text.get_height() / chunk_size):
+			var frag = fragment_tscn.instance()
+			var sprite: Sprite = frag.get_node("Sprite")
+			frag.get_node("CollisionShape2D").shape.extents = scale * Vector2(chunk_size, chunk_size) / 2
+			sprite.texture = curr_text
+			sprite.region_rect = Rect2(chunk_size * i, chunk_size * j, chunk_size, chunk_size)
+			sprite.scale = scale
+			frag.global_position = $sprite.global_position + Vector2(chunk_size * i, chunk_size * j)
+			# give a random impulse
+			frag.apply_central_impulse(rand_range(500, 1000) * Vector2(rand_range(1,3), 0).rotated(rand_range(0, 7)))
+			get_parent().add_child(frag)
+
+
+
