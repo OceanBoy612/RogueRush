@@ -5,11 +5,13 @@ signal collided
 signal landed
 signal jumped
 signal attacked
+signal dashed
 
 
 export var speed: float = 150
-export var jump_height: float = 120
+export var jump_height: float = 580
 export var attack_force: float = 100
+export var dash_force: float = 250
 export var gravity_scale: float = 30
 export var friction: float = 0.7
 
@@ -24,7 +26,8 @@ var on_floor: bool = false
 enum {
 	MOVE,
 	ATTACK,
-	JUMP
+	JUMP,
+	DASH,
 }
 var state = MOVE
 
@@ -67,7 +70,13 @@ func _input(event):
 		)
 		$sprite.playing = false
 		$AnimationPlayer.play("Attack")
-		
+	if event.is_action_pressed("dash"):
+		state = DASH
+		decaying_forces.append(
+			DecayingForce.new(dash_force, vel.normalized(), 15, 1.0, "dashed")
+		)
+		$sprite.play("Dash on")
+		animation_lock = true
 
 
 func _ready():
@@ -81,19 +90,6 @@ func _ready():
 
 
 func handle_animations():
-	if animation_lock:
-		return
-	
-	# on floor not on floor
-	if not on_floor and is_on_floor():
-		on_floor = true
-		state = MOVE
-#		print("TESTER")
-		$sprite.play("Jump land")
-		emit_signal("landed")
-	if on_floor and not is_on_floor():
-		on_floor = false
-		emit_signal("jumped")
 	
 	# left and right flipping
 	if vel.x > 0:
@@ -105,12 +101,36 @@ func handle_animations():
 		$sprite.position.x = abs($sprite.position.x)
 		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
 	
+	if animation_lock:
+		return
+	
+	if state == DASH:
+		if $sprite.animation == "Dash on":
+			$sprite.play("Dashing")
+		
+		return 
+	
+	# on floor not on floor
+	if not on_floor and is_on_floor(): #landed
+		on_floor = true
+		state = MOVE
+		
+		$sprite.play("Jump land")
+		animation_lock = true
+		
+		emit_signal("landed")
+		return
+	elif on_floor and not is_on_floor(): # jumped
+		on_floor = false
+		emit_signal("jumped")
+		
+		$sprite.play("Jump")
+		animation_lock = true
+		return
+	
 	
 	if not on_floor:
-		if $sprite.animation == "Run":
-			$sprite.play("Jump")
-			animation_lock = true # for anim to finish
-		elif abs(vel.y) < 120: # near the top of the jump arc.
+		if abs(vel.y) < 120: # near the top of the jump arc.
 			$sprite.play("Jump air")
 		elif vel.y < 0:
 			$sprite.play("Jump up")
@@ -157,6 +177,9 @@ func get_forces() -> Vector2:
 			to_remove.append(d)
 	
 	for t in to_remove:
+		if has_signal(t._signal):
+			emit_signal(t._signal)
+			print_debug("emitting: ", t._signal)
 		decaying_forces.erase(t)
 	
 	return forces
@@ -187,6 +210,15 @@ var animation_lock = false
 func _on_sprite_animation_finished():
 	if animation_lock:
 		animation_lock = false
+		print("animation finished: ", $sprite.animation)
+
+
+func _on_Player_dashed():
+	$sprite.play("Dash off")
+	animation_lock = true
+	state = MOVE
+
+
 
 ### Signal functions ###
 
@@ -199,18 +231,21 @@ class DecayingForce:
 	var frames: int
 	var max_frames: int
 	var decay_rate: float
+	var _signal: String
 	
-	func _init(p=0.0, d=Vector2(1,0), f=1, dr=1.0):
+	func _init(p=0.0, d=Vector2(1,0), f=1, dr=1.0, s=""):
 		power = p
 		dir = d
 		frames = 0
 		max_frames = f
 		decay_rate = dr
+		_signal = s
 	
 	func get_impulse() -> Vector2:
 		var impulse = dir*power
 		power *= decay_rate
 		frames += 1
-		return impulse
+		return impulse * Vector2(1, 0.2)
+
 
 
