@@ -1,10 +1,9 @@
-extends Particles2D
+extends AnimatedSprite
 
 
 func _ready():
-	one_shot = true
-	emitting = true
+	play("Dust")
 
 
-func _on_Timer_timeout():
+func _on_Dust_animation_finished():
 	queue_free()

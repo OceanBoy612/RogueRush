@@ -236,7 +236,7 @@ func killed(body):
 func _on_landed():
 	# spawn dust cloud
 	var dust = load("res://Prefabs/Dust.tscn").instance()
-	dust.global_position = global_position + Vector2(0, 10)
+	dust.global_position = global_position
 	get_parent().add_child(dust)
 	$LandSound.play()
 	vel.y = 0
