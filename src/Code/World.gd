@@ -2,7 +2,7 @@ tool
 extends Node2D
 
 
-export var _spawn_level: bool setget spawn_level
+export var _spawn_level: bool setget spawn_level2
 export var room_number : int = 5
 
 
@@ -35,12 +35,13 @@ func _ready():
 	$Player.connect("attacked", self, "on_player_attack")
 	$Player.connect("landed", self, "on_player_landed")
 	$Player.connect("jumped", self, "on_player_jumped")
-	$Zombie.connect("died", self, "on_zombie_died")
+#	$Zombie.connect("died", self, "on_zombie_died")
 	
 	if Engine.editor_hint:
 		return
 	
-	spawn_level(true)
+	spawn_level2(true)
+#	spawn_level(true)
 
 func on_zombie_died():
 	$Camera2D.add_trauma(0.3)
@@ -55,22 +56,178 @@ func on_player_landed():
 func on_player_jumped():
 	$Camera2D.add_trauma(0)
 	
-
+func connect_zombies():
+	for zombie in $Background.get_children():
+		zombie.connect("died", self, "on_zombie_died")
 
 
 
 ### Tool Script helpers ###
 
-func spawn_level(v):
-	if v == false: # we didn't click it so do nothing
-		return 
+
+
+const ZOMBIE_TILE = 26
+const PLAYER_TILE = 27
+const EXIT_TILE = 28
+
+
+func spawn_level2(v=true):
+	if v==false:
+		return
 	
+	var rooms: Node2D = load("res://Art/Rooms/Rooms.tscn").instance()
+	var start_room = rooms.get_node("Start")
+	var end_room = rooms.get_node("End")
+	var other_rooms = []
+	for child in rooms.get_children():
+		if child.name == "Start" and child.name == "End":
+			continue
+		elif child.name.begins_with("Room"):
+			other_rooms.append(child)
+	
+	print(start_room, end_room, other_rooms)
+	
+	# Clear the tilemaps
+	clear_tilemaps()
+	
+	# spawn the start room.
+	spawn_a_room(start_room, true)
+	offset = room_info[EXIT_TILE][0] + Vector2(1,0)
+	
+	# for number of rooms, spawn a room
+	for i in range(room_number):
+		var room_id: int = randi() % other_rooms.size()
+		print("prev_room: ", room_info[EXIT_TILE])
+		var exits = get_room_exits(other_rooms[room_id])
+		
+		offset -= exits["entrance"]
+		spawn_a_room(other_rooms[room_id])
+		offset += exits["exit"] + Vector2(1,0)
+		
+	# spawn the end room
+	var exits = get_room_exits(end_room)
+	offset -= exits["entrance"]
+	spawn_a_room(end_room)
+	
+	# update autotile
+	$Background.update_bitmask_region()
+	$Foreground.update_bitmask_region()
+	
+	connect_zombies()
+
+
+func spawn_a_room(room: Node2D, move_player=false):
+	_spawn_a_tilemap(room, "Foreground", move_player)
+	room_info = {}
+	_spawn_a_tilemap(room, "Background", move_player)
+
+
+func _spawn_a_tilemap(room, tilemap, move_player=false):
+	var cellvs = (room.get_node(tilemap) as TileMap).get_used_cells() # array of Vector2
+	for cellv in cellvs:
+		var tile_id: int = (room.get_node(tilemap) as TileMap).get_cellv(cellv)
+		
+		match tile_id:
+			EXIT_TILE:
+				pass
+			PLAYER_TILE:
+				if move_player:
+					$Player.global_position = $Background.map_to_world(cellv+offset)
+				else:
+					$Exit.global_position = $Background.map_to_world(cellv+offset)
+				pass
+			ZOMBIE_TILE:
+				var zombie = load("res://Prefabs/Zombie.tscn").instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
+				zombie.global_position = $Background.map_to_world(cellv+offset)
+				$Background.add_child(zombie)
+				zombie.owner = get_tree().get_edited_scene_root()
+				pass
+			_:
+				get_node(tilemap).set_cellv(cellv+offset, tile_id)
+		
+		if not tile_id in room_info:
+			room_info[tile_id] = []
+		room_info[tile_id].append(cellv)
+
+
+func get_room_exits(room: Node2D, tilemap: String="Background"):
+	var exits = []
+	for cellv in (room.get_node(tilemap) as TileMap).get_used_cells(): # array of Vector2
+		var tile_id: int = (room.get_node(tilemap) as TileMap).get_cellv(cellv)
+		if tile_id != EXIT_TILE:
+			continue
+		exits.append(cellv)
+	
+	if exits.size() == 1:
+		return {
+			"entrance": exits[0]
+		}
+	
+	assert(exits.size() == 2, "Must only have 2 exits per room. Start and end.")
+	
+	if exits[0].x < exits[1].x:
+		return {
+			"entrance": exits[0],
+			"exit": exits[1],
+		}
+	else:
+		return {
+			"entrance": exits[1],
+			"exit": exits[0],
+		}
+	
+
+func clear_tilemaps():
+	for c in $Background.get_children():
+		c.queue_free()
 	# clear the tilemap
 	offset = Vector2(0, 0)
 	entrance = Vector2(0, 0)
 	exit = Vector2(0, 0)
 	$Background.clear()
 	$Foreground.clear()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+func spawn_level(v):
+	if v == false: # we didn't click it so do nothing
+		return 
+	
+	clear_tilemaps()
 	
 	# load the rooms
 	var rooms: Array = load_rooms() # an array of Image objects
@@ -225,4 +382,5 @@ static func list_files_in_directory(path, ext=".tres"):
 
 func _on_Exit_body_entered(body):
 	if body.name == "Player":
-		spawn_level(true)
+		spawn_level2(true)
+#		spawn_level(true)
