@@ -75,6 +75,7 @@ func _input(event):
 	if event.is_action_pressed("jump") and in_coyote_time and state != JUMP:
 		# jump
 		state = JUMP
+#		$JumpSound.play()
 		decaying_forces.append(
 			DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 		)
