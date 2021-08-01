@@ -167,7 +167,7 @@ func get_user_input(up_aswell: bool = false) -> Vector2:
 
 
 func get_gravity() -> Vector2:
-	if not is_on_floor():
+	if not .is_on_floor():
 		return Vector2(0, 1) * gravity_scale
 	else:
 		return Vector2(0, 1) * gravity_scale * 0.01
