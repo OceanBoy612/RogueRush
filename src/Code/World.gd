@@ -120,8 +120,9 @@ func spawn_level2(v=true):
 
 
 func spawn_a_room(room: Node2D, move_player=false):
-	_spawn_a_tilemap(room, "Background", move_player)
 	room_info = {}
+	_spawn_a_tilemap(room, "Background", move_player)
+	_spawn_a_tilemap(room, "Foreground2", move_player)
 	_spawn_a_tilemap(room, "Foreground", move_player)
 
 
@@ -143,8 +144,8 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 				pass
 			ZOMBIE_TILE:
 				var zombie = load("res://Prefabs/Zombie.tscn").instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
-				zombie.global_position = Tilemap.map_to_world(cellv+offset)
-				$Foreground.add_child(zombie)
+				zombie.global_position = $Foreground.map_to_world(cellv+offset)
+				$Zombies.add_child(zombie)
 				zombie.owner = get_tree().get_edited_scene_root()
 			_:
 				get_node(tilemap).set_cellv(cellv+offset, tile_id)
@@ -185,7 +186,9 @@ func get_room_exits(room: Node2D, tilemap: String="Foreground"):
 
 func clear_tilemaps():
 	for c in $Foreground.get_children(): c.queue_free()
+	for c in $Foreground2.get_children(): c.queue_free()
 	for c in $Background.get_children(): c.queue_free()
+	for c in $Zombies.get_children(): c.queue_free()
 	
 	# clear the tilemap
 	offset = Vector2(0, 0)
