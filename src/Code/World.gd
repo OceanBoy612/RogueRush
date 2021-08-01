@@ -59,8 +59,9 @@ func on_player_jumped():
 	$Camera2D.add_trauma(0)
 	
 func connect_zombies():
-	for zombie in $Background.get_children():
-		zombie.connect("died", self, "on_zombie_died")
+	for zombie in $Foreground.get_children():
+		if zombie.is_connected("died", self, "on_zombie_died"):
+			zombie.connect("died", self, "on_zombie_died")
 
 
 
@@ -87,7 +88,7 @@ func spawn_level2(v=true):
 		elif child.name.begins_with("Room"):
 			other_rooms.append(child)
 	
-	print(start_room, end_room, other_rooms)
+	#print(start_room, end_room, other_rooms)
 	
 	# Clear the tilemaps
 	clear_tilemaps()
@@ -119,31 +120,32 @@ func spawn_level2(v=true):
 
 
 func spawn_a_room(room: Node2D, move_player=false):
-	_spawn_a_tilemap(room, "Foreground", move_player)
-	room_info = {}
 	_spawn_a_tilemap(room, "Background", move_player)
+	room_info = {}
+	_spawn_a_tilemap(room, "Foreground", move_player)
 
 
 func _spawn_a_tilemap(room, tilemap, move_player=false):
-	var cellvs = (room.get_node(tilemap) as TileMap).get_used_cells() # array of Vector2
+	var Tilemap = room.get_node(tilemap)
+	var cellvs = Tilemap.get_used_cells() # array of Vector2
 	for cellv in cellvs:
-		var tile_id: int = (room.get_node(tilemap) as TileMap).get_cellv(cellv)
+		
+		var tile_id: int = Tilemap.get_cellv(cellv)
 		
 		match tile_id:
 			EXIT_TILE:
 				pass
 			PLAYER_TILE:
 				if move_player:
-					$Player.global_position = $Background.map_to_world(cellv+offset)
+					$Player.global_position = $Foreground.map_to_world(cellv+offset)
 				else:
-					$Exit.global_position = $Background.map_to_world(cellv+offset)
+					$Exit.global_position = $Foreground.map_to_world(cellv+offset)
 				pass
 			ZOMBIE_TILE:
 				var zombie = load("res://Prefabs/Zombie.tscn").instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
-				zombie.global_position = $Background.map_to_world(cellv+offset)
-				$Background.add_child(zombie)
+				zombie.global_position = Tilemap.map_to_world(cellv+offset)
+				$Foreground.add_child(zombie)
 				zombie.owner = get_tree().get_edited_scene_root()
-				pass
 			_:
 				get_node(tilemap).set_cellv(cellv+offset, tile_id)
 		
@@ -152,15 +154,17 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 		room_info[tile_id].append(cellv)
 
 
-func get_room_exits(room: Node2D, tilemap: String="Background"):
+func get_room_exits(room: Node2D, tilemap: String="Foreground"):
+	var Tilemap: TileMap = room.get_node(tilemap)
 	var exits = []
-	for cellv in (room.get_node(tilemap) as TileMap).get_used_cells(): # array of Vector2
-		var tile_id: int = (room.get_node(tilemap) as TileMap).get_cellv(cellv)
+	for cellv in Tilemap.get_used_cells(): # array of Vector2
+		var tile_id: int = Tilemap.get_cellv(cellv)
 		if tile_id != EXIT_TILE:
 			continue
 		exits.append(cellv)
 	
 	if exits.size() == 1:
+		print("exit size 1")
 		return {
 			"entrance": exits[0]
 		}
@@ -180,8 +184,9 @@ func get_room_exits(room: Node2D, tilemap: String="Background"):
 	
 
 func clear_tilemaps():
-	for c in $Background.get_children():
-		c.queue_free()
+	for c in $Foreground.get_children(): c.queue_free()
+	for c in $Background.get_children(): c.queue_free()
+	
 	# clear the tilemap
 	offset = Vector2(0, 0)
 	entrance = Vector2(0, 0)
