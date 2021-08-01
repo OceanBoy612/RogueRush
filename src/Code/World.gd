@@ -61,7 +61,7 @@ func on_player_jumped():
 	
 func connect_zombies():
 	for zombie in $Foreground.get_children():
-		if zombie.is_connected("died", self, "on_zombie_died"):
+		if not zombie.is_connected("died", self, "on_zombie_died"):
 			zombie.connect("died", self, "on_zombie_died")
 
 
