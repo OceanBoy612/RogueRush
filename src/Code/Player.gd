@@ -96,11 +96,13 @@ func _ready():
 func handle_animations():
 	
 	# left and right flipping
-	if vel.x > 0:
+	var user_dir: Vector2 = get_user_input().normalized()
+	if user_dir.x > 0:
+#	if vel.x > 0:
 		$sprite.flip_h = false
 		$sprite.position.x = abs($sprite.position.x) * -1
 		$AttackPosition.position.x = abs($AttackPosition.position.x)
-	elif vel.x < 0:
+	elif user_dir.x < 0:
 		$sprite.flip_h = true
 		$sprite.position.x = abs($sprite.position.x)
 		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
@@ -238,7 +240,7 @@ func killed(body):
 func _on_landed():
 	# spawn dust cloud
 	var dust = load("res://Prefabs/Dust.tscn").instance()
-	dust.global_position = global_position + Vector2(0, 10)
+	dust.global_position = global_position
 	get_parent().add_child(dust)
 	$LandSound.play()
 	vel.y = 0
@@ -259,6 +261,10 @@ func _on_sprite_animation_finished():
 
 func _on_Player_dashed():
 	$sprite.play("Dash off")
+	var puff: AnimatedSprite = load("res://Code/helper scenes/DashPuff.tscn").instance()
+	puff.global_position = global_position
+	puff.flip($sprite.flip_h)
+	get_parent().add_child(puff)
 	animation_lock = true
 	state = MOVE
 

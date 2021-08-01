@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Code/helper scenes/DashPuff.gd" type="Script" id=1]
+[ext_resource path="res://Art/Puff_sprite_frames.tres" type="SpriteFrames" id=2]
+
+[node name="DashPuff" type="AnimatedSprite"]
+frames = ExtResource( 2 )
+animation = "Puff"
+offset = Vector2( -30.225, -10.767 )
+script = ExtResource( 1 )
+[connection signal="animation_finished" from="." to="." method="_on_DashPuff_animation_finished"]
