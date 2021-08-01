@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Splat2.mp3-37aaad7f91e9ed2beef3c981ebb3d90a.mp3str"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/Splat2.mp3"
+dest_files=[ "res://.import/Splat2.mp3-37aaad7f91e9ed2beef3c981ebb3d90a.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

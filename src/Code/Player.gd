@@ -15,14 +15,18 @@ export var dash_force: float = 260
 export var gravity_scale: float = 11
 export var friction: float = 0.7
 export var time_between_stomps: int = 2700
+export var coyote_time_frames: int = 8
 
 
 var decaying_forces = []
 var vel: Vector2 = Vector2()
 var prev_vel: Vector2 = Vector2()
 var playerattack_tscn = preload("res://Prefabs/PlayerAttack.tscn")
-
 var on_floor: bool = false
+
+var in_coyote_time = false
+var time_since_on_floor: float = 0
+
 
 enum {
 	MOVE,
@@ -50,6 +54,10 @@ func _physics_process(delta):
 	
 	handle_animations()
 	
+	if on_floor: time_since_on_floor = 0
+	else: time_since_on_floor += delta
+	in_coyote_time = time_since_on_floor < 0.01667 * coyote_time_frames # four frames
+	
 	for i in get_slide_count():
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		if (temp-vel).length() > 5: # real collisions:
@@ -63,13 +71,13 @@ func _input(event):
 	if state == ATTACK:
 		return
 	
-	if event.is_action_pressed("jump"):
+	if event.is_action_pressed("jump") and in_coyote_time and state != JUMP:
 		# jump
-		if is_on_floor():
-			state = JUMP
-			decaying_forces.append(
-				DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
-			)
+		state = JUMP
+		decaying_forces.append(
+			DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
+		)
+		print("JJJJJJJJJJJJJJJJJJJJJJUMPPPPPPPPPPPPPPPPPPPPPPPPPPPed")
 	if event.is_action_pressed("attack") and is_on_floor() and state == MOVE:
 		state = ATTACK
 		decaying_forces.append(
@@ -96,16 +104,17 @@ func _ready():
 func handle_animations():
 	
 	# left and right flipping
-	var user_dir: Vector2 = get_user_input().normalized()
-	if user_dir.x > 0:
-#	if vel.x > 0:
-		$sprite.flip_h = false
-		$sprite.position.x = abs($sprite.position.x) * -1
-		$AttackPosition.position.x = abs($AttackPosition.position.x)
-	elif user_dir.x < 0:
-		$sprite.flip_h = true
-		$sprite.position.x = abs($sprite.position.x)
-		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
+	if state != ATTACK: # prevent flipping during attack
+		var user_dir: Vector2 = get_user_input().normalized()
+		if user_dir.x > 0:
+	#	if vel.x > 0:
+			$sprite.flip_h = false
+			$sprite.position.x = abs($sprite.position.x) * -1
+			$AttackPosition.position.x = abs($AttackPosition.position.x)
+		elif user_dir.x < 0:
+			$sprite.flip_h = true
+			$sprite.position.x = abs($sprite.position.x)
+			$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
 	
 	if animation_lock:
 		return
@@ -159,6 +168,7 @@ func handle_animations():
 var time_since_stomp = OS.get_system_time_msecs()
 
 func spawn_attack():
+#	$SmashSound.play()
 	var attackShape = playerattack_tscn.instance()
 	attackShape.creator = self
 	get_parent().add_child(attackShape)
@@ -210,6 +220,7 @@ func can_dash():
 
 func dash():
 	state = DASH
+#	$DashSound.play()
 	decaying_forces.append(
 		DecayingForce.new(dash_force, get_user_input(true).normalized(), 10, 0.8, "dashed")
 	)
@@ -240,7 +251,7 @@ func _on_landed():
 	var dust = load("res://Prefabs/Dust.tscn").instance()
 	dust.global_position = global_position
 	get_parent().add_child(dust)
-	$LandSound.play()
+#	$LandSound.play()
 	vel.y = 0
 
 

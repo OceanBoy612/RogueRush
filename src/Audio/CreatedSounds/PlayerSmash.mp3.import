@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/PlayerSmash.mp3-bfecc1932023deca88ba9723abf921aa.mp3str"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/PlayerSmash.mp3"
+dest_files=[ "res://.import/PlayerSmash.mp3-bfecc1932023deca88ba9723abf921aa.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
