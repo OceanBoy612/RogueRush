@@ -168,6 +168,7 @@ func handle_animations():
 var time_since_stomp = OS.get_system_time_msecs()
 
 func spawn_attack():
+#	$SmashSound.play()
 	var attackShape = playerattack_tscn.instance()
 	attackShape.creator = self
 	get_parent().add_child(attackShape)
@@ -219,6 +220,7 @@ func can_dash():
 
 func dash():
 	state = DASH
+#	$DashSound.play()
 	decaying_forces.append(
 		DecayingForce.new(dash_force, get_user_input(true).normalized(), 10, 0.8, "dashed")
 	)
@@ -249,7 +251,7 @@ func _on_landed():
 	var dust = load("res://Prefabs/Dust.tscn").instance()
 	dust.global_position = global_position
 	get_parent().add_child(dust)
-	$LandSound.play()
+#	$LandSound.play()
 	vel.y = 0
 
 
