@@ -36,6 +36,9 @@ var state = MOVE
 
 
 func _physics_process(delta):
+	if Global.time_scale == 0:
+		return
+
 	vel += get_forces()
 	vel += get_gravity()
 	if state == MOVE or state == JUMP:
@@ -57,6 +60,9 @@ func _physics_process(delta):
 
 
 func _input(event):
+	if state == ATTACK:
+		return
+	
 	if event.is_action_pressed("ui_accept"):
 		# jump
 		if is_on_floor():
@@ -64,7 +70,7 @@ func _input(event):
 			decaying_forces.append(
 				DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 			)
-	if event.is_action_pressed("attack"):
+	if event.is_action_pressed("attack") and is_on_floor():
 		state = ATTACK
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 45, 0.95)
@@ -170,7 +176,7 @@ func get_gravity() -> Vector2:
 	if not .is_on_floor():
 		return Vector2(0, 1) * gravity_scale
 	else:
-		return Vector2(0, 1) * gravity_scale * 0.01
+		return Vector2(0, 1) * gravity_scale# * 0.01
 
 
 func get_forces() -> Vector2:
