@@ -44,10 +44,12 @@ func _ready():
 #	spawn_level(true)
 
 func on_zombie_died():
-	$Camera2D.add_trauma(0.3)
+	Engine.time_scale = 0.1
+	yield(get_tree().create_timer(0.08), "timeout")
+	Engine.time_scale = 1
 
 func on_player_attack():
-	$Camera2D.add_trauma(0.35)
+	$Camera2D.add_trauma(0.3)
 
 
 func on_player_landed():
