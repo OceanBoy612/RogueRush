@@ -122,12 +122,16 @@ __meta__ = {
 
 [node name="DashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+volume_db = 6.0
 
 [node name="LandSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+volume_db = -4.0
+pitch_scale = 0.6
 
 [node name="SmashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+volume_db = -10.0
 
 [connection signal="dashed" from="." to="." method="_on_Player_dashed"]
 [connection signal="animation_finished" from="sprite" to="." method="_on_sprite_animation_finished"]
