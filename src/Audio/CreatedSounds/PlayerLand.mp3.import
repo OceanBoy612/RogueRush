@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/PlayerLand.mp3-26a17a909f02c40a65a3b8de69b2318b.mp3str"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/PlayerLand.mp3"
+dest_files=[ "res://.import/PlayerLand.mp3-26a17a909f02c40a65a3b8de69b2318b.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
