@@ -63,14 +63,14 @@ func _input(event):
 	if state == ATTACK:
 		return
 	
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("jump"):
 		# jump
 		if is_on_floor():
 			state = JUMP
 			decaying_forces.append(
 				DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 			)
-	if event.is_action_pressed("attack") and is_on_floor():
+	if event.is_action_pressed("attack") and is_on_floor() and state == MOVE:
 		state = ATTACK
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 45, 0.95)
