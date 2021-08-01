@@ -23,7 +23,7 @@ func _physics_process(delta):
 	
 	$sprite.flip_h = move_dir.x > 0
 	
-	if timer > 0.4:
+	if timer > 0.1:
 		var l = int($left.is_colliding())
 		var r = int($right.is_colliding())
 		var rs = int($right_side.is_colliding())
