@@ -14,8 +14,8 @@ func _process(delta):
 			body.damage()
 			if creator and creator.has_method("killed"):
 				creator.killed(body)
-	$CollisionShape2D.set_deferred("disabled", true)
-	set_process(false)
+#	$CollisionShape2D.set_deferred("disabled", true)
+#	set_process(false)
 
 
 func _on_AnimatedSprite_animation_finished():

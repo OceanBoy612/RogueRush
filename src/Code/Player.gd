@@ -257,6 +257,10 @@ func _on_sprite_animation_finished():
 
 func _on_Player_dashed():
 	$sprite.play("Dash off")
+	var puff: AnimatedSprite = load("res://Code/helper scenes/DashPuff.tscn").instance()
+	puff.global_position = global_position
+	puff.flip($sprite.flip_h)
+	get_parent().add_child(puff)
 	animation_lock = true
 	state = MOVE
 
