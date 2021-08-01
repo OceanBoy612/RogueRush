@@ -12,7 +12,8 @@ export var speed: float = 55
 export var jump_height: float = 220
 export var attack_force: float = 35
 export var dash_force: float = 260
-export var gravity_scale: float = 11
+export var gravity: float = 11
+var gravity_scale
 export var friction: float = 0.7
 export var time_between_stomps: int = 2700
 
@@ -70,8 +71,10 @@ func _input(event):
 			decaying_forces.append(
 				DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 			)
-	if event.is_action_pressed("attack") and is_on_floor() and state == MOVE:
+	if event.is_action_pressed("attack") and (state == MOVE or state == JUMP):
 		state = ATTACK
+		print("TESTERS")
+		gravity_scale = 50
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 45, 0.95)
 		)
@@ -84,6 +87,8 @@ func _input(event):
 
 
 func _ready():
+	print(gravity)
+	gravity_scale = gravity
 	connect("landed", self, "_on_landed")
 	$AnimationPlayer.connect("animation_finished", self, "_on_animation_finished")
 
@@ -249,6 +254,7 @@ func _on_landed():
 func _on_animation_finished(anim_name: String):
 	if anim_name == "Attack":
 		state = MOVE
+		gravity_scale = gravity
 		animation_lock = false
 
 
