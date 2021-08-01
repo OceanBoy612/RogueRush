@@ -141,6 +141,7 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 			PLAYER_TILE:
 				if move_player:
 					$Player.global_position = $Foreground.map_to_world(cellv+offset)
+					$Entrance.global_position = $Player.global_position
 				else:
 					$Exit.global_position = $Foreground.map_to_world(cellv+offset)
 				pass
