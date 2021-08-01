@@ -199,6 +199,7 @@ func clear_tilemaps():
 	exit = Vector2(0, 0)
 	$Background.clear()
 	$Foreground.clear()
+	$Foreground2.clear()
 
 
 
