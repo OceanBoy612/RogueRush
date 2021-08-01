@@ -96,11 +96,13 @@ func _ready():
 func handle_animations():
 	
 	# left and right flipping
-	if vel.x > 0:
+	var user_dir: Vector2 = get_user_input().normalized()
+	if user_dir.x > 0:
+#	if vel.x > 0:
 		$sprite.flip_h = false
 		$sprite.position.x = abs($sprite.position.x) * -1
 		$AttackPosition.position.x = abs($AttackPosition.position.x)
-	elif vel.x < 0:
+	elif user_dir.x < 0:
 		$sprite.flip_h = true
 		$sprite.position.x = abs($sprite.position.x)
 		$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
