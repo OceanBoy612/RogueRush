@@ -44,4 +44,5 @@ script = ExtResource( 5 )
 
 [node name="Exit" parent="." instance=ExtResource( 9 )]
 position = Vector2( 944, 112 )
+
 [connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]
