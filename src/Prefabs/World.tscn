@@ -3,7 +3,6 @@
 [ext_resource path="res://Prefabs/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Code/World.gd" type="Script" id=2]
 [ext_resource path="res://Art/Tilesets/Tileset.tres" type="TileSet" id=3]
-[ext_resource path="res://Audio/CreatedSounds/Splat4.mp3" type="AudioStream" id=4]
 [ext_resource path="res://Code/Camera2D.gd" type="Script" id=5]
 [ext_resource path="res://Prefabs/Exit.tscn" type="PackedScene" id=9]
 
@@ -46,4 +45,5 @@ script = ExtResource( 5 )
 
 [node name="Exit" parent="." instance=ExtResource( 9 )]
 position = Vector2( 1440, 912 )
+
 [connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]

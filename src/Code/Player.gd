@@ -52,6 +52,7 @@ func _physics_process(delta):
 	var temp = vel
 	vel = move_and_slide(vel * Global.time_scale, Vector2(0, -1))
 	
+	handle_checks()
 	handle_animations()
 	
 	if on_floor: time_since_on_floor = 0
@@ -74,12 +75,13 @@ func _input(event):
 	if event.is_action_pressed("jump") and in_coyote_time and state != JUMP:
 		# jump
 		state = JUMP
+		print("changeing state: ", state)
 		decaying_forces.append(
 			DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
 		)
-		print("JJJJJJJJJJJJJJJJJJJJJJUMPPPPPPPPPPPPPPPPPPPPPPPPPPPed")
 	if event.is_action_pressed("attack") and is_on_floor() and state == MOVE:
 		state = ATTACK
+		print("changeing state: ", state)
 		decaying_forces.append(
 			DecayingForce.new(attack_force, vel.normalized(), 45, 0.95)
 		)
@@ -101,8 +103,7 @@ func _ready():
 ### Subroutines ###
 
 
-func handle_animations():
-	
+func handle_checks():
 	# left and right flipping
 	if state != ATTACK: # prevent flipping during attack
 		var user_dir: Vector2 = get_user_input().normalized()
@@ -115,9 +116,9 @@ func handle_animations():
 			$sprite.flip_h = true
 			$sprite.position.x = abs($sprite.position.x)
 			$AttackPosition.position.x = abs($AttackPosition.position.x) * -1
-	
-	if animation_lock:
-		return
+
+
+func handle_animations():
 	
 	if state == DASH:
 		if $sprite.animation == "Dash on":
@@ -129,6 +130,7 @@ func handle_animations():
 	if not on_floor and is_on_floor() and .is_on_floor(): #landed
 		on_floor = true
 		state = MOVE
+		print("changeing state: ", state)
 		
 		$sprite.play("Jump land")
 		animation_lock = true
@@ -143,6 +145,8 @@ func handle_animations():
 		animation_lock = true
 		return
 	
+	if animation_lock:
+		return
 	
 	if not on_floor:
 		if abs(vel.y) < 120: # near the top of the jump arc.
@@ -161,7 +165,6 @@ func handle_animations():
 			else:
 				$sprite.play("Idle Stomp")
 				animation_lock = true
-				print("STOMP")
 				time_since_stomp = OS.get_system_time_msecs()
 #			$sprite.playing = false
 
@@ -220,6 +223,7 @@ func can_dash():
 
 func dash():
 	state = DASH
+	print("changeing state: ", state)
 #	$DashSound.play()
 	decaying_forces.append(
 		DecayingForce.new(dash_force, get_user_input(true).normalized(), 10, 0.8, "dashed")
@@ -258,6 +262,7 @@ func _on_landed():
 func _on_animation_finished(anim_name: String):
 	if anim_name == "Attack":
 		state = MOVE
+		print("changeing state: ", state)
 		animation_lock = false
 
 
@@ -265,7 +270,7 @@ var animation_lock = false
 func _on_sprite_animation_finished():
 	if animation_lock:
 		animation_lock = false
-		print("animation finished: ", $sprite.animation)
+#		print("animation finished: ", $sprite.animation)
 
 
 func _on_Player_dashed():
@@ -276,6 +281,7 @@ func _on_Player_dashed():
 	get_parent().add_child(puff)
 	animation_lock = true
 	state = MOVE
+	print("changeing state: ", state)
 
 
 

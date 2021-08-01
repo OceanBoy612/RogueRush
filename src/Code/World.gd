@@ -44,7 +44,7 @@ func _ready():
 #	spawn_level(true)
 
 func on_zombie_died():
-	$ZombieDeathSound.play()
+#	$ZombieDeathSound.play()
 	Engine.time_scale = 0.1
 	yield(get_tree().create_timer(0.06), "timeout")
 	Engine.time_scale = 1
@@ -60,9 +60,10 @@ func on_player_jumped():
 	$Camera2D.add_trauma(0)
 	
 func connect_zombies():
-	for zombie in $Foreground.get_children():
+	for zombie in $Zombies.get_children():
 		if not zombie.is_connected("died", self, "on_zombie_died"):
 			zombie.connect("died", self, "on_zombie_died")
+			print("connecting zombie")
 
 
 
