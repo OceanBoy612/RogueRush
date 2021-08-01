@@ -44,9 +44,9 @@ func _ready():
 #	spawn_level(true)
 
 func on_zombie_died():
-#	$ZombieDeathSound.play()
+	$ZombieSplatSound.play()
 	Engine.time_scale = 0.1
-	yield(get_tree().create_timer(0.06), "timeout")
+	yield(get_tree().create_timer(0.04), "timeout")
 	Engine.time_scale = 1
 
 func on_player_attack():

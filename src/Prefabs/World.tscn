@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Prefabs/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Code/World.gd" type="Script" id=2]
 [ext_resource path="res://Art/Tilesets/Tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://Art/doorentrance.png" type="Texture" id=4]
 [ext_resource path="res://Code/Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://Audio/CreatedSounds/Splat4.mp3" type="AudioStream" id=6]
 [ext_resource path="res://Prefabs/Exit.tscn" type="PackedScene" id=9]
 
 [node name="World" type="Node2D"]
@@ -49,5 +50,8 @@ smoothing_speed = 20.0
 script = ExtResource( 5 )
 
 [node name="Tween" type="Tween" parent="Camera2D"]
+
+[node name="ZombieSplatSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
 
 [connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]
