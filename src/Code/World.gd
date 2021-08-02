@@ -63,7 +63,7 @@ func connect_zombies():
 	for zombie in $Zombies.get_children():
 		if not zombie.is_connected("died", self, "on_zombie_died"):
 			zombie.connect("died", self, "on_zombie_died")
-			print("connecting zombie")
+#			print("connecting zombie")
 
 
 
@@ -117,6 +117,7 @@ func spawn_level2(v=true):
 	# update autotile
 	$Background.update_bitmask_region()
 	$Foreground.update_bitmask_region()
+	$Foreground2.update_bitmask_region()
 	
 	connect_zombies()
 
@@ -146,7 +147,8 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 					$Exit.global_position = $Foreground.map_to_world(cellv+offset)
 				pass
 			ZOMBIE_TILE:
-				var zombie = load("res://Prefabs/Zombie.tscn").instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
+				var instance_id = PackedScene.GEN_EDIT_STATE_INSTANCE if Engine.editor_hint else 0
+				var zombie = load("res://Prefabs/Zombie.tscn").instance(instance_id)
 				zombie.global_position = $Foreground.map_to_world(cellv+offset)
 				$Zombies.add_child(zombie)
 				zombie.owner = get_tree().get_edited_scene_root()
