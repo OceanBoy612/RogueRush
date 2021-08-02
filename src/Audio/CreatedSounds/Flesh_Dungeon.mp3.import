@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Flesh_Dungeon.mp3-71b1cb47bd5b2777f6b98c7a8632ef9d.mp3str"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/Flesh_Dungeon.mp3"
+dest_files=[ "res://.import/Flesh_Dungeon.mp3-71b1cb47bd5b2777f6b98c7a8632ef9d.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
