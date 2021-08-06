@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/HAMMER2_HATS_sfx.wav-ead01ec418a259ab241683caa4e05124.sample"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/HAMMER2_HATS_sfx.wav"
+dest_files=[ "res://.import/HAMMER2_HATS_sfx.wav-ead01ec418a259ab241683caa4e05124.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
