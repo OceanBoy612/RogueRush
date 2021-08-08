@@ -7,8 +7,8 @@
 [ext_resource path="res://Code/ui/UI.gd" type="Script" id=5]
 [ext_resource path="res://Code/DashCooldown.gd" type="Script" id=6]
 [ext_resource path="res://Art/DashCooldown_animated_texture.tres" type="Texture" id=7]
-[ext_resource path="res://Audio/CreatedSounds/PlayerSmash3.mp3" type="AudioStream" id=8]
-[ext_resource path="res://Audio/CreatedSounds/PlayerDash.mp3" type="AudioStream" id=9]
+[ext_resource path="res://Audio/CreatedSounds/HAMMER3_HATS_sfx.wav" type="AudioStream" id=8]
+[ext_resource path="res://Audio/CreatedSounds/DASH2_HATS_sfx.wav" type="AudioStream" id=9]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 8.0

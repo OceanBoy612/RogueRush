@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/DASH2_HATS_sfx.wav-251cde7c8a286f70121ce23f271fdce9.sample"
+
+[deps]
+
+source_file="res://Audio/CreatedSounds/DASH2_HATS_sfx.wav"
+dest_files=[ "res://.import/DASH2_HATS_sfx.wav-251cde7c8a286f70121ce23f271fdce9.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
