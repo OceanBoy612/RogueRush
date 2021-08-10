@@ -115,7 +115,7 @@ func spawn_level2(v=true):
 	spawn_a_room(end_room)
 	
 	# update autotile
-	$Background.update_bitmask_region()
+#	$Background.update_bitmask_region()
 	$Foreground.update_bitmask_region()
 	$Foreground2.update_bitmask_region()
 	
@@ -150,7 +150,7 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 				var instance_id = PackedScene.GEN_EDIT_STATE_INSTANCE if Engine.editor_hint else 0
 				var zombie = load("res://Prefabs/Zombie.tscn").instance(instance_id)
 				zombie.global_position = $Foreground.map_to_world(cellv+offset)
-				$Zombies.add_child(zombie)
+				$Zombies.call_deferred("add_child", zombie)
 				zombie.owner = get_tree().get_edited_scene_root()
 			_:
 				get_node(tilemap).set_cellv(cellv+offset, tile_id)

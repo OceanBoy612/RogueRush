@@ -6,6 +6,7 @@ signal landed
 signal jumped
 signal attacked
 signal dashed
+signal started_to_dash
 
 
 export var speed: float = 55
@@ -225,7 +226,7 @@ func is_on_floor():
 
 
 func can_dash():
-	return $UI/DashCooldown.value == $UI/DashCooldown.max_value and vel.length() > 0
+	return $UI/DashCooldown.value == $UI/DashCooldown.max_value and get_user_input(true).length() > 0
 
 
 func dash():
@@ -235,6 +236,7 @@ func dash():
 	decaying_forces.append(
 		DecayingForce.new(dash_force, get_user_input(true).normalized() * Vector2(1, 2), 10, 0.8, "dashed")
 	)
+	emit_signal("started_to_dash")
 	vel = Vector2()
 	$sprite.play("Dash on")
 	afterimage_index = 0
@@ -303,6 +305,7 @@ func spawn_afterimage():
 		afterimage.global_position = $sprite.global_position
 		afterimage.flip_h = $sprite.flip_h
 		get_parent().add_child(afterimage)
+		get_parent().move_child(afterimage, get_index()-1)
 	
 	afterimage_index += 1
 

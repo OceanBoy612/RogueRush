@@ -5,7 +5,7 @@ export var fade_duration: float = 1.0
 
 
 func _ready():
-	$Tween.interpolate_property(self, "modulate", modulate, Color(1,1,1,0), fade_duration, Tween.TRANS_LINEAR, Tween.EASE_IN)
+	$Tween.interpolate_property(self, "modulate", modulate, Color(1,1,1,0), fade_duration, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
 
 

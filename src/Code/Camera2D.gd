@@ -15,6 +15,8 @@ onready var player: KinematicBody2D = get_node(player_path)
 var offset_pos: Vector2 = Vector2()
 
 func _ready():
+	if player.has_signal("started_to_dash"):
+		player.connect("started_to_dash", self, "_on_player_dashed")
 	player.connect("landed", self, "_on_player_landed")
 	randomize()
 	noise.seed = randi()
@@ -41,6 +43,11 @@ func _on_player_landed():
 			bob_duration, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.interpolate_property(self, "offset_pos", bob_pos, Vector2(),
 			bob_duration, Tween.TRANS_SINE, Tween.EASE_OUT, bob_duration)
+	$Tween.start()
+
+
+func _on_player_dashed():
+	$Tween.interpolate_property(self, "zoom", zoom*0.95, zoom, 0.4, Tween.TRANS_LINEAR)
 	$Tween.start()
 
 
