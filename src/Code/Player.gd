@@ -55,6 +55,10 @@ func _physics_process(delta):
 
 	handle_checks()
 	handle_animations()
+	
+	
+	if state == DASH:
+		spawn_afterimage()
 
 	if on_floor: time_since_on_floor = 0
 	else: time_since_on_floor += delta
@@ -221,7 +225,7 @@ func is_on_floor():
 
 
 func can_dash():
-	return $UI/DashCooldown.value == $UI/DashCooldown.max_value
+	return $UI/DashCooldown.value == $UI/DashCooldown.max_value and vel.length() > 0
 
 
 func dash():
@@ -229,10 +233,11 @@ func dash():
 	print("changeing state: ", state)
 	$DashSound.play()
 	decaying_forces.append(
-		DecayingForce.new(dash_force, get_user_input(true).normalized(), 10, 0.8, "dashed")
+		DecayingForce.new(dash_force, get_user_input(true).normalized() * Vector2(1, 2), 10, 0.8, "dashed")
 	)
 	vel = Vector2()
 	$sprite.play("Dash on")
+	afterimage_index = 0
 #	animation_lock = true
 	empty_dash_meter()
 
@@ -287,6 +292,19 @@ func _on_Player_dashed():
 	state = MOVE
 	print("changeing state: ", state)
 
+var Afterimage_tscn = preload("res://Code/dash/afterimage.tscn")
+var afterimage_index = 0
+
+func spawn_afterimage():
+	if afterimage_index % 4 == 0:
+		var afterimage: Sprite = Afterimage_tscn.instance()
+		print("hello")
+		afterimage.texture = $sprite.frames.get_frame($sprite.animation, $sprite.frame)
+		afterimage.global_position = $sprite.global_position
+		afterimage.flip_h = $sprite.flip_h
+		get_parent().add_child(afterimage)
+	
+	afterimage_index += 1
 
 
 ### Signal functions ###
