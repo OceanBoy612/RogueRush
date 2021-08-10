@@ -47,7 +47,7 @@ func _on_player_landed():
 
 
 func _on_player_dashed():
-	$Tween.interpolate_property(self, "zoom", zoom*0.95, zoom, 0.4, Tween.TRANS_LINEAR)
+	$Tween.interpolate_property(self, "zoom", zoom*0.95, zoom, 0.3, Tween.TRANS_QUART, Tween.EASE_OUT)
 	$Tween.start()
 
 
