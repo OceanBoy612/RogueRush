@@ -18,7 +18,7 @@ func _ready():
 
 func _physics_process(delta):
 	
-	move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
+	var _vel = move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
 	timer += delta
 	
 	$sprite.flip_h = move_dir.x > 0

@@ -32,10 +32,9 @@ var room_info = {
 
 
 func _ready():
-	$Player.connect("attacked", self, "on_player_attack")
-	$Player.connect("landed", self, "on_player_landed")
-	$Player.connect("jumped", self, "on_player_jumped")
-#	$Zombie.connect("died", self, "on_zombie_died")
+#	$Player.connect("attacked", self, "on_player_attack")
+#	$Player.connect("landed", self, "on_player_landed")
+#	$Player.connect("jumped", self, "on_player_jumped")
 	
 	if Engine.editor_hint:
 		return
@@ -100,7 +99,7 @@ func spawn_level2(v=true):
 	offset = room_info[EXIT_TILE][0] + Vector2(1,0)
 	
 	# for number of rooms, spawn a room
-	for i in range(room_number):
+	for _i in range(room_number):
 		var room_id: int = randi() % other_rooms.size()
 		print("prev_room: ", room_info[EXIT_TILE])
 		var exits = get_room_exits(other_rooms[room_id])
@@ -141,7 +140,7 @@ func _spawn_a_tilemap(room, tilemap, move_player=false):
 				pass
 			PLAYER_TILE:
 				if move_player:
-					$Player.global_position = $Foreground.map_to_world(cellv+offset)
+#					$Player.global_position = $Foreground.map_to_world(cellv+offset)
 					$Entrance.global_position = $Player.global_position
 				else:
 					$Exit.global_position = $Foreground.map_to_world(cellv+offset)

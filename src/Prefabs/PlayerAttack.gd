@@ -8,7 +8,7 @@ func _ready():
 	Global.time_scale = 1
 
 
-func _process(delta):
+func _process(_delta):
 	for body in get_overlapping_bodies():
 		if body.has_method("damage"):
 			body.damage()

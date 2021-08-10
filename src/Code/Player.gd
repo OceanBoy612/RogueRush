@@ -186,7 +186,7 @@ func spawn_attack():
 func get_user_input(up_aswell: bool = false) -> Vector2:
 	return Vector2(
 		Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left"),
-		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up") if up_aswell else 0
+		Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up") if up_aswell else 0.0
 	) * speed
 
 
@@ -245,7 +245,7 @@ func empty_dash_meter():
 	$UI/DashCooldown.value = $UI/DashCooldown.min_value
 
 
-func killed(body):
+func killed(_body):
 	fill_dash_meter()
 
 
