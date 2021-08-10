@@ -7,21 +7,70 @@ onready var fragment_tscn = preload("res://Code/fragment/Fragment.tscn")
 
 
 var move_dir = Vector2(1,0)
-var move_speed = 100
+export var move_speed = 100
+export var attack_move_speed = 175
 var gravity = Vector2(0,100)
 var timer = 0
 
+enum {
+	SHAMBLE,
+	CHARGE,
+	ATTACK,
+}
 
-func _ready():
-	$sprite.play("Shamble")
+var state = SHAMBLE
 
 
 func _physics_process(delta):
 	
-	move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
-	timer += delta
-	
 	$sprite.flip_h = move_dir.x > 0
+	$PlayerDetector.cast_to.x = abs($PlayerDetector.cast_to.x) if $sprite.flip_h else -abs($PlayerDetector.cast_to.x)
+	$DamageArea.position.x = abs($DamageArea.position.x) if $sprite.flip_h else -abs($DamageArea.position.x)
+	
+	if $PlayerDetector.is_colliding() and state == SHAMBLE:
+		state = CHARGE
+	
+	match state:
+		SHAMBLE:
+			shamble(delta)
+		CHARGE:
+			charge()
+		ATTACK:
+			attack(delta)
+
+
+func _is_animation_complete(sprite: AnimatedSprite):
+	return sprite.frame >= sprite.frames.get_frame_count(sprite.animation) - 1
+
+
+func charge():
+	if not $sprite.animation == "Charge": # enter the charge state
+		$sprite.play("Charge")
+		print("entering the charge state")
+	if _is_animation_complete($sprite): # exit the charge state
+		state = ATTACK
+
+
+func attack(delta):
+	
+	if not $sprite.animation == "Attack": # enter the attack state
+		$sprite.play("Attack")
+		$DamageArea/CollisionShape2D.disabled = false
+		print("entering the attack state")
+	
+	move_and_slide(move_dir * attack_move_speed * Global.time_scale)
+	
+	if _is_animation_complete($sprite): # exit the attack state
+		state = SHAMBLE
+		$DamageArea/CollisionShape2D.disabled = true
+	
+
+func shamble(delta):
+	
+	$sprite.play("Shamble")
+	
+	timer += delta
+	move_and_slide(gravity + move_dir * move_speed * Global.time_scale)
 	
 	if timer > 0.1:
 		var l = int($left.is_colliding())
@@ -66,4 +115,7 @@ func _on_death():
 			get_parent().add_child(frag)
 
 
+func _on_DamageArea_body_entered(body):
+	if body.has_method("damage"):
+		body.damage()
 

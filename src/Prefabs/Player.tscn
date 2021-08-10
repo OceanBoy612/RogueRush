@@ -59,7 +59,6 @@ tracks/2/keys = {
 collision_layer = 2
 collision_mask = 5
 script = ExtResource( 1 )
-jump_height = 290.0
 gravity = 15.0
 
 [node name="sprite" type="AnimatedSprite" parent="."]

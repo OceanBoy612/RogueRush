@@ -10,9 +10,9 @@ signal started_to_dash
 
 
 export var speed: float = 55
-export var jump_height: float = 220
+export var jump_height: float = 95
 export var attack_force: float = 35
-export var dash_force: float = 260
+export var dash_force: float = 82
 export var gravity: float = 11
 var gravity_scale
 export var friction: float = 0.7
@@ -46,7 +46,8 @@ func _physics_process(delta):
 		return
 
 	vel += get_forces()
-	vel += get_gravity()
+	if state != DASH:
+		vel += get_gravity()
 	if state == MOVE or state == JUMP:
 		vel += get_user_input()
 #	print(vel * delta * Global.time_scale)
@@ -69,8 +70,9 @@ func _physics_process(delta):
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		if (temp-vel).length() > 5: # real collisions:
 			emit_signal("collided", collision)
-
-	vel.x *= friction
+	
+	if state != DASH:
+		vel.x *= friction
 	prev_vel = vel
 
 
@@ -78,13 +80,8 @@ func _input(event):
 	if state == ATTACK:
 		return
 
-	if event.is_action_pressed("jump") and in_coyote_time and state != JUMP:
-		# jump
-		state = JUMP
-		print("changeing state: ", state)
-		decaying_forces.append(
-			DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
-		)
+	if can_jump(event):
+		jump()
 	if event.is_action_pressed("attack") and (state == MOVE or state == JUMP):
 		state = ATTACK
 		gravity_scale = 50
@@ -204,7 +201,7 @@ func get_gravity() -> Vector2:
 
 func get_forces() -> Vector2:
 	var forces = Vector2()
-
+	
 	var to_remove = []
 	for d in decaying_forces:
 		d = (d as DecayingForce)
@@ -229,12 +226,13 @@ func can_dash():
 	return $UI/DashCooldown.value == $UI/DashCooldown.max_value and get_user_input(true).length() > 0
 
 
-func dash():
+func dash(override_dir=null):
 	state = DASH
 	print("changeing state: ", state)
 	$DashSound.play()
+	var dash_dir = override_dir if override_dir else get_user_input(true).normalized()
 	decaying_forces.append(
-		DecayingForce.new(dash_force, get_user_input(true).normalized() * Vector2(1, 2), 10, 0.8, "dashed")
+		DecayingForce.new(dash_force, dash_dir, 10, 0.8, "dashed")
 	)
 	emit_signal("started_to_dash")
 	vel = Vector2()
@@ -242,6 +240,18 @@ func dash():
 	afterimage_index = 0
 #	animation_lock = true
 	empty_dash_meter()
+
+
+func can_jump(event) -> bool:
+	return event.is_action_pressed("jump") and in_coyote_time and state != JUMP
+
+func jump():
+	# jump
+	state = JUMP
+	print("changeing state: ", state)
+	decaying_forces.append(
+		DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
+	)
 
 
 func fill_dash_meter():
@@ -335,4 +345,4 @@ class DecayingForce:
 		var impulse = dir*power
 		power *= decay_rate
 		frames += 1
-		return impulse * Vector2(1, 0.2)
+		return impulse * Vector2(1, 0.7)

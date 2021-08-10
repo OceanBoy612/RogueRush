@@ -41,7 +41,6 @@ texture = ExtResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 48, 96 )
-dash_force = 340.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 32.7576, 72.446 )
