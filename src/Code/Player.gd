@@ -7,6 +7,8 @@ signal jumped
 signal attacked
 signal dashed
 signal started_to_dash
+signal health_changed(_new, _max)
+signal died
 
 
 export var speed: float = 55
@@ -18,16 +20,22 @@ var gravity_scale
 export var friction: float = 0.7
 export var time_between_stomps: int = 2700
 export var coyote_time_frames: int = 8
+export var knockback_force = 150
+
 
 
 var decaying_forces = []
 var vel: Vector2 = Vector2()
 var prev_vel: Vector2 = Vector2()
 var playerattack_tscn = preload("res://Prefabs/PlayerAttack.tscn")
+var damage_effect_tscn = preload("res://Code/damageEffect/DamageEffect.tscn")
 var on_floor: bool = false
 
 var in_coyote_time = false
 var time_since_on_floor: float = 0
+
+var max_health = 30
+var health = 30 setget set_health
 
 
 enum {
@@ -36,7 +44,7 @@ enum {
 	JUMP,
 	DASH,
 }
-var state = MOVE
+var state = MOVE setget set_state
 
 ### Main ###
 
@@ -83,7 +91,7 @@ func _input(event):
 	if can_jump(event):
 		jump()
 	if event.is_action_pressed("attack") and (state == MOVE or state == JUMP):
-		state = ATTACK
+		set_state(ATTACK)
 		gravity_scale = 50
 		print("changeing state: ", state)
 		decaying_forces.append(
@@ -137,7 +145,7 @@ func handle_animations():
 	# on floor not on floor
 	if not on_floor and is_on_floor() and .is_on_floor(): #landed
 		on_floor = true
-		state = MOVE
+		set_state(MOVE)
 		print("changeing state: ", state)
 		if animation_lock == false:
 			$sprite.play("Jump land")
@@ -227,7 +235,7 @@ func can_dash():
 
 
 func dash(override_dir=null):
-	state = DASH
+	set_state(DASH)
 	print("changeing state: ", state)
 	$DashSound.play()
 	var dash_dir = override_dir if override_dir else get_user_input(true).normalized()
@@ -247,7 +255,7 @@ func can_jump(event) -> bool:
 
 func jump():
 	# jump
-	state = JUMP
+	set_state(JUMP)
 	print("changeing state: ", state)
 	decaying_forces.append(
 		DecayingForce.new(jump_height, Vector2(0, -1), 5, 1.0)
@@ -282,7 +290,7 @@ func _on_landed():
 func _on_animation_finished(anim_name: String):
 	if anim_name == "Attack":
 		gravity_scale = gravity
-		state = MOVE
+		set_state(MOVE)
 		print("changeing state: ", state)
 		animation_lock = false
 
@@ -301,7 +309,7 @@ func _on_Player_dashed():
 	puff.flip($sprite.flip_h)
 	get_parent().add_child(puff)
 	animation_lock = true
-	state = MOVE
+	set_state(MOVE)
 	print("changeing state: ", state)
 
 var Afterimage_tscn = preload("res://Code/dash/afterimage.tscn")
@@ -318,6 +326,44 @@ func spawn_afterimage():
 		get_parent().move_child(afterimage, get_index()-1)
 	
 	afterimage_index += 1
+
+
+func set_health(v):
+	health = v
+	if health <= 0:
+		emit_signal("died")
+		health = max_health
+	emit_signal("health_changed", health, max_health)
+
+
+func damage(damage_source: Node2D):
+	var effect = damage_effect_tscn.instance()
+	effect.position = $DamagePosition.position
+	add_child(effect)
+	set_health(health - 1)
+	
+	# knockback
+	decaying_forces.append(
+		DecayingForce.new(knockback_force, (global_position - damage_source.global_position).normalized(), 6, 0.85)
+	)
+	
+	flash_white()
+
+
+func flash_white():
+	$sprite.self_modulate = Color(100,100,100,1)
+	yield(get_tree().create_timer(0.1), "timeout")
+	$sprite.self_modulate = Color(1,1,1,1)
+	
+
+func set_state(new_state):
+	state = new_state
+	match new_state:
+		DASH:
+			set_collision_mask_bit(2, false) # don't collide with zombies when dashing
+		_:
+			set_collision_mask_bit(2, true)
+
 
 
 ### Signal functions ###

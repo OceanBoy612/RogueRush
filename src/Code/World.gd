@@ -400,3 +400,7 @@ func _on_Exit_body_entered(body):
 	if body.name == "Player":
 		spawn_level2(true)
 #		spawn_level(true)
+
+
+func _on_Player_died():
+	spawn_level2(true)

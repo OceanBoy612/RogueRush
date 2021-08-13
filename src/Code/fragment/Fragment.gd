@@ -13,3 +13,8 @@ func _on_Timer_timeout():
 	else:
 		queue_free()
 	pass # Replace with function body.
+
+
+func _on_Fragment_body_entered(body):
+	$Sprite2.global_position = body.global_position
+	pass # Replace with function body.

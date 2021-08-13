@@ -61,3 +61,4 @@ stream = ExtResource( 7 )
 autoplay = true
 
 [connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]
+[connection signal="died" from="Player" to="." method="_on_Player_died"]

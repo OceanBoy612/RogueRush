@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Player_sprite_frames.tres" type="SpriteFrames" id=2]
@@ -9,10 +9,12 @@
 [ext_resource path="res://Art/DashCooldown_animated_texture.tres" type="Texture" id=7]
 [ext_resource path="res://Audio/CreatedSounds/HAMMER3_HATS_sfx.wav" type="AudioStream" id=8]
 [ext_resource path="res://Audio/CreatedSounds/DASH2_HATS_sfx.wav" type="AudioStream" id=9]
+[ext_resource path="res://Art/Sprites/healthbar/healthbar_fill2.png" type="Texture" id=10]
+[ext_resource path="res://Art/Sprites/healthbar/healthbar_bg.png" type="Texture" id=11]
+[ext_resource path="res://Code/health.gd" type="Script" id=12]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 8.0
-height = 16.0
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 9.39262, 14.3167 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
@@ -67,8 +69,8 @@ frames = ExtResource( 2 )
 animation = "Attack"
 
 [node name="collision" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -16.104 )
-shape = SubResource( 1 )
+position = Vector2( 0, -14.2967 )
+shape = SubResource( 3 )
 
 [node name="AttackPosition" type="Position2D" parent="."]
 position = Vector2( 25.6238, 0 )
@@ -96,11 +98,11 @@ margin_right = 192.0
 margin_bottom = 108.0
 script = ExtResource( 5 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="DashCooldown" type="TextureProgress" parent="UI"]
+visible = false
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 72.0
@@ -115,7 +117,24 @@ tint_under = Color( 0.341176, 0.341176, 0.341176, 0.596078 )
 tint_progress = Color( 0.92549, 0.92549, 0.92549, 1 )
 script = ExtResource( 6 )
 __meta__ = {
-"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Healthbar_bg" type="TextureRect" parent="UI"]
+margin_right = 35.0
+margin_bottom = 16.0
+texture = ExtResource( 11 )
+
+[node name="health" type="TextureProgress" parent="UI/Healthbar_bg"]
+margin_left = 16.0026
+margin_top = 5.00264
+margin_right = 32.0026
+margin_bottom = 11.0026
+value = 100.0
+texture_progress = ExtResource( 10 )
+nine_patch_stretch = true
+script = ExtResource( 12 )
+__meta__ = {
 "_edit_use_anchors_": false
 }
 
@@ -130,5 +149,9 @@ volume_db = -10.0
 stream = ExtResource( 8 )
 volume_db = -20.0
 
+[node name="DamagePosition" type="Position2D" parent="."]
+position = Vector2( 0.0101395, -13.179 )
+
 [connection signal="dashed" from="." to="." method="_on_Player_dashed"]
+[connection signal="health_changed" from="." to="UI/Healthbar_bg/health" method="_on_Player_health_changed"]
 [connection signal="animation_finished" from="sprite" to="." method="_on_sprite_animation_finished"]

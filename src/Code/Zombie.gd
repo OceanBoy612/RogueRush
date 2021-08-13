@@ -9,7 +9,7 @@ onready var fragment_tscn = preload("res://Code/fragment/Fragment.tscn")
 var move_dir = Vector2(1,0)
 export var move_speed = 100
 export var attack_move_speed = 175
-var gravity = Vector2(0,100)
+var gravity = Vector2(0,300)
 var timer = 0
 
 enum {
@@ -46,7 +46,7 @@ func _is_animation_complete(sprite: AnimatedSprite):
 func charge():
 	if not $sprite.animation == "Charge": # enter the charge state
 		$sprite.play("Charge")
-		print("entering the charge state")
+#		print("entering the charge state")
 	if _is_animation_complete($sprite): # exit the charge state
 		state = ATTACK
 
@@ -56,9 +56,9 @@ func attack(delta):
 	if not $sprite.animation == "Attack": # enter the attack state
 		$sprite.play("Attack")
 		$DamageArea/CollisionShape2D.disabled = false
-		print("entering the attack state")
+#		print("entering the attack state")
 	
-	move_and_slide(move_dir * attack_move_speed * Global.time_scale)
+	move_and_slide((gravity*0.4) + move_dir * attack_move_speed * Global.time_scale)
 	
 	if _is_animation_complete($sprite): # exit the attack state
 		state = SHAMBLE
@@ -117,5 +117,7 @@ func _on_death():
 
 func _on_DamageArea_body_entered(body):
 	if body.has_method("damage"):
-		body.damage()
+		body.damage(self)
+		$DamageArea/CollisionShape2D.set_deferred("disabled", true)
+		
 
