@@ -80,6 +80,8 @@ func spawn_level2(v=true):
 	if v==false:
 		return
 	
+	$Player.health = $Player.max_health
+	
 	var rooms: Node2D = load("res://Art/Rooms/Rooms.tscn").instance()
 	var start_room = rooms.get_node("Start")
 	var end_room = rooms.get_node("End")

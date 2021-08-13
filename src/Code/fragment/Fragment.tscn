@@ -8,6 +8,7 @@ extents = Vector2( 4, 4 )
 
 [node name="Fragment" type="RigidBody2D"]
 gravity_scale = 9.93
+continuous_cd = 1
 contacts_reported = 1
 contact_monitor = true
 script = ExtResource( 2 )

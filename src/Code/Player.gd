@@ -332,7 +332,6 @@ func set_health(v):
 	health = v
 	if health <= 0:
 		emit_signal("died")
-		health = max_health
 	emit_signal("health_changed", health, max_health)
 
 

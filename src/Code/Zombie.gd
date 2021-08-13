@@ -111,7 +111,8 @@ func _on_death():
 			sprite.scale = scale
 			frag.global_position = $sprite.global_position + Vector2(chunk_size * i, chunk_size * j)
 			# give a random impulse
-			frag.apply_central_impulse(rand_range(500, 1000) * Vector2(rand_range(1,3), 0).rotated(rand_range(0, 7)))
+#			frag.apply_central_impulse(rand_range(500, 1000) * Vector2(0, -rand_range(0.7,2)))
+			frag.apply_central_impulse(rand_range(500, 1000) * Vector2(rand_range(0.7,2), 0).rotated(-rand_range(PI/4, 3*PI/4)))
 			get_parent().add_child(frag)
 
 
