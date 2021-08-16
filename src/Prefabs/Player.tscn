@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Code/Player.gd" type="Script" id=1]
 [ext_resource path="res://Art/Player_sprite_frames.tres" type="SpriteFrames" id=2]
@@ -12,8 +12,9 @@
 [ext_resource path="res://Art/Sprites/healthbar/healthbar_fill2.png" type="Texture" id=10]
 [ext_resource path="res://Art/Sprites/healthbar/healthbar_bg.png" type="Texture" id=11]
 [ext_resource path="res://Code/health.gd" type="Script" id=12]
+[ext_resource path="res://Audio/CreatedSounds/HURT1_HATS_sfx.wav" type="AudioStream" id=13]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.39262, 14.3167 )
 
 [sub_resource type="Animation" id=2]
@@ -70,7 +71,7 @@ animation = "Attack"
 
 [node name="collision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -14.2967 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="AttackPosition" type="Position2D" parent="."]
 position = Vector2( 25.6238, 0 )
@@ -147,10 +148,14 @@ volume_db = -10.0
 
 [node name="SmashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
-volume_db = -20.0
+volume_db = -14.0
 
 [node name="DamagePosition" type="Position2D" parent="."]
 position = Vector2( 0.0101395, -13.179 )
+
+[node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )
+volume_db = 2.019
 
 [connection signal="dashed" from="." to="." method="_on_Player_dashed"]
 [connection signal="health_changed" from="." to="UI/Healthbar_bg/health" method="_on_Player_health_changed"]

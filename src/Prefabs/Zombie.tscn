@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Art/Zombie_sprite_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Code/Zombie.gd" type="Script" id=2]
+[ext_resource path="res://Audio/CreatedSounds/ZOMBIE1_HATS_sfx.wav" type="AudioStream" id=3]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 9.18647, 10.0163 )
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -16,7 +17,7 @@ script = ExtResource( 2 )
 
 [node name="collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -10 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -16.185 )
@@ -61,5 +62,8 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
 shape = SubResource( 2 )
 disabled = true
+
+[node name="ZombieAttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_DamageArea_body_entered"]

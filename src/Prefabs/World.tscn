@@ -5,8 +5,8 @@
 [ext_resource path="res://Art/Tilesets/Tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://Art/doorentrance.png" type="Texture" id=4]
 [ext_resource path="res://Code/Camera2D.gd" type="Script" id=5]
-[ext_resource path="res://Audio/CreatedSounds/Splat4.mp3" type="AudioStream" id=6]
-[ext_resource path="res://Audio/CreatedSounds/Flesh_Dungeon.mp3" type="AudioStream" id=7]
+[ext_resource path="res://Audio/CreatedSounds/HATS_TRACK3_v2.wav" type="AudioStream" id=6]
+[ext_resource path="res://Audio/CreatedSounds/SQUISH1_HATS_sfx.wav" type="AudioStream" id=7]
 [ext_resource path="res://Prefabs/Exit.tscn" type="PackedScene" id=9]
 
 [node name="World" type="Node2D"]
@@ -55,10 +55,12 @@ script = ExtResource( 5 )
 [node name="Tween" type="Tween" parent="Camera2D"]
 
 [node name="ZombieSplatSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 6 )
+stream = ExtResource( 7 )
+volume_db = 6.529
 
 [node name="Soundtrack" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 6 )
+volume_db = -14.0
 autoplay = true
 
 [connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]
