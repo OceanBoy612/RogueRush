@@ -141,21 +141,22 @@ __meta__ = {
 
 [node name="DashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+volume_db = -10.0
 
 [node name="LandSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = -10.0
+volume_db = -20.0
 
 [node name="SmashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
-volume_db = -14.0
+volume_db = -20.0
 
 [node name="DamagePosition" type="Position2D" parent="."]
 position = Vector2( 0.0101395, -13.179 )
 
 [node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 13 )
-volume_db = 2.019
+volume_db = -5.0
 
 [connection signal="dashed" from="." to="." method="_on_Player_dashed"]
 [connection signal="health_changed" from="." to="UI/Healthbar_bg/health" method="_on_Player_health_changed"]

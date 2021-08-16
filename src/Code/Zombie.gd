@@ -55,6 +55,7 @@ func attack(delta):
 	
 	if not $sprite.animation == "Attack": # enter the attack state
 		$sprite.play("Attack")
+		$ZombieAttackSound.play()
 		$DamageArea/CollisionShape2D.disabled = false
 #		print("entering the attack state")
 	
@@ -89,6 +90,11 @@ func shamble(delta):
 func damage():
 	emit_signal("died")
 	_on_death()
+	print("SPLAT!!!")
+	$Splat.play()
+#	Engine.time_scale = 0.1
+	yield(get_tree().create_timer(0.04), "timeout")
+#	Engine.time_scale = 1
 	queue_free()
 
 

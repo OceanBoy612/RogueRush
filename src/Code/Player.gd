@@ -34,8 +34,8 @@ var on_floor: bool = false
 var in_coyote_time = false
 var time_since_on_floor: float = 0
 
-var max_health = 30
-var health = 30 setget set_health
+var max_health = 3
+var health = 3 setget set_health
 
 
 enum {
@@ -338,6 +338,7 @@ func set_health(v):
 func damage(damage_source: Node2D):
 	var effect = damage_effect_tscn.instance()
 	effect.position = $DamagePosition.position
+	$HurtSound.play()
 	add_child(effect)
 	set_health(health - 1)
 	

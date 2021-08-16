@@ -35,7 +35,6 @@ func _ready():
 	$Player.connect("attacked", self, "on_player_attack")
 	$Player.connect("landed", self, "on_player_landed")
 	$Player.connect("jumped", self, "on_player_jumped")
-#	$Zombie.connect("died", self, "on_zombie_died")
 	
 	if Engine.editor_hint:
 		return
@@ -44,6 +43,7 @@ func _ready():
 #	spawn_level(true)
 
 func on_zombie_died():
+	print("SPLAT!!!")
 	$ZombieSplatSound.play()
 	Engine.time_scale = 0.1
 	yield(get_tree().create_timer(0.04), "timeout")
@@ -60,10 +60,11 @@ func on_player_jumped():
 	$Camera2D.add_trauma(0)
 	
 func connect_zombies():
+	print("Trying to connect to zombies")
 	for zombie in $Zombies.get_children():
-		if zombie.has_signal("died") and not zombie.is_connected("died", self, "on_zombie_died"):
-			zombie.connect("died", self, "on_zombie_died")
-#			print("connecting zombie")
+#		if zombie.has_signal("died") and not zombie.is_connected("died", self, "on_zombie_died"):
+		zombie.connect("died", self, "on_zombie_died")
+		print("connecting zombie")
 
 
 
